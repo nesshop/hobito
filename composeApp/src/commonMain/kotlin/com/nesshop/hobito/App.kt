@@ -13,7 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.nesshop.hobito.ui.theme.HobitoTheme
+import com.nesshop.hobito.designsystem.theme.HobitoTheme
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 

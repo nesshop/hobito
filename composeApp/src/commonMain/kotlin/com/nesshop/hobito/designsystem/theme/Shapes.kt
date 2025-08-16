@@ -1,4 +1,4 @@
-package com.nesshop.hobito.ui.theme
+package com.nesshop.hobito.designsystem.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
