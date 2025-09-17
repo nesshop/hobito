@@ -81,3 +81,9 @@ dependencies {
     debugImplementation(compose.uiTooling)
 }
 
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.nesshop.hobito"
+    generateResClass = always
+}
+
