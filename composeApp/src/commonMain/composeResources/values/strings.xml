@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Hobito</string>
+    <string name="login_screen_title">Haz login para empezar a guardar tus hobbies!</string>
+</resources>
