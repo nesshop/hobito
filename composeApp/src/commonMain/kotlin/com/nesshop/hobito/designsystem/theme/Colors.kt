@@ -217,3 +217,11 @@ val surfaceContainerLowDarkHighContrast = Color(0xFF1D2024)
 val surfaceContainerDarkHighContrast = Color(0xFF2E3035)
 val surfaceContainerHighDarkHighContrast = Color(0xFF393B41)
 val surfaceContainerHighestDarkHighContrast = Color(0xFF44474C)
+
+//No theming colors
+val bitterSweet = Color(0xFFFF6B6B)
+val dodger_blue = Color(0xFF54A0FF)
+val golden_tainoi = Color(0xFFFECA57)
+val java = Color(0xFF1DD1A1)
+val malibu = Color(0xFF48DBFB)
+val yellow_orange = Color(0xFFFF9F43)

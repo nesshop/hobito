@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -20,8 +21,8 @@ import androidx.compose.ui.unit.dp
 fun HobitoCircularIcon(
     painter: Painter,
     contentDescription: String?,
-    modifier: Modifier = Modifier,
-    size: Dp = 32.dp,
+    modifier: Modifier = Modifier.padding(4.dp),
+    size: Dp = 58.dp,
     backgroundColor: Color = Color.White,
     onClick: (() -> Unit)? = null
 ) {
@@ -36,6 +37,6 @@ fun HobitoCircularIcon(
     ) {
         Image(painter = painter,
             contentDescription = contentDescription,
-            modifier = Modifier.size(size * 0.6f))
+            modifier = Modifier.size(size * 0.6f).padding())
     }
 }

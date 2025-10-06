@@ -153,14 +153,14 @@ fun hobitoTypography(): Typography {
         displayLarge = TextStyle(
             fontFamily = poppins,
             fontWeight = FontWeight.Normal,
-            fontSize = 57.sp,
+            fontSize = 56.sp,
             lineHeight = 64.sp,
             letterSpacing = -0.25.sp
         ),
         displayMedium = TextStyle(
             fontFamily = poppins,
             fontWeight = FontWeight.Normal,
-            fontSize = 45.sp,
+            fontSize = 44.sp,
             lineHeight = 52.sp,
             letterSpacing = 0.sp
         ),
