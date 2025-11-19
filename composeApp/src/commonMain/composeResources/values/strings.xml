@@ -1,4 +1,23 @@
 <resources>
     <string name="app_name">Hobito</string>
+
+    <!--Login Screen-->
     <string name="login_screen_title">Haz login para empezar a guardar tus hobbies!</string>
+
+    <string name="login_screen_email_label">Correo electrónico</string>
+    <string name="login_screen_password_label">Contraseña</string>
+    <string name="login_screen_login_button">Iniciar sesión</string>
+    <string name="login_screen_divider_text">O</string>
+    <string name="login_screen_google_sign">Accede con Google</string>
+    <string name="login_screen_apple_sign">Accede con Apple</string>
+    <string name="login_screen_have_an_account_text">¿No tienes una cuenta? Regístrate</string>
+    <string name="login_screen_sign_up_text">Regístrate</string>
+
+    <!--Accessibility-->
+    <string name="login_screen_circular_logo_content_description">Logo circular</string>
+    <string name="login_screen_chat_logo_content_description">Logo chat</string>
+    <string name="login_screen_book_logo_content_description">Logo libro</string>
+    <string name="login_screen_google_logo_content_description">Logo Google</string>
+    <string name="login_screen_apple_logo_content_description">Logo Apple</string>
+
 </resources>
