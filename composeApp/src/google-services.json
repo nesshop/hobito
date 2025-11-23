@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549836708620",
+    "project_id": "hobito-pro",
+    "storage_bucket": "hobito-pro.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549836708620:android:70c8d6a5da61c09b07c729",
+        "android_client_info": {
+          "package_name": "com.nesshop.hobito"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyNus8fDe8bPzb7LSvHjJH_0vjFeaKX7E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
