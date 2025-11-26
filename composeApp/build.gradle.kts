@@ -57,6 +57,20 @@ kotlin {
             implementation(libs.kotlin.test)
         }
     }
+
+    cocoapods {
+        version = "1.0.0"
+        summary = "Hobito"
+        homepage = "https://github.com/nesshop/hobito"
+        ios.deploymentTarget = "18.2"
+
+        framework {
+            baseName = "composeApp"
+            isStatic = true
+        }
+
+
+    }
 }
 
 android {
