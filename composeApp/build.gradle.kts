@@ -69,7 +69,13 @@ kotlin {
             isStatic = true
         }
 
+        pod("FirebaseCore"){
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
 
+        pod("FirebaseAuth"){
+            extraOpts += listOf("-compiler-option", "-fmodules")
+        }
     }
 }
 
