@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -57,6 +58,7 @@ import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
+import com.nesshop.hobito.domain.usecase.SignInWithEmailUseCase
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
 import com.nesshop.hobito.login_screen_apple_sign
@@ -72,17 +74,21 @@ import com.nesshop.hobito.login_screen_login_button
 import com.nesshop.hobito.login_screen_password_label
 import com.nesshop.hobito.login_screen_sign_up_text
 import com.nesshop.hobito.login_screen_title
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.koinInject
 
 @Preview
 @Composable
 fun LoginScreen() {
 
+    val signIn = koinInject<SignInWithEmailUseCase>()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val scope = rememberCoroutineScope()
 
     Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
         FancyBackground(modifier = Modifier.matchParentSize())
@@ -150,7 +156,12 @@ fun LoginScreen() {
                     )
                     HobitoButton(
                         text = stringResource(Res.string.login_screen_login_button),
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            scope.launch {
+                              val result = signIn(email, password)
+                                println(result)
+                            }
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = false
                     )
