@@ -3,7 +3,6 @@ package com.nesshop.hobito.features.authentication.data.remote
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.nesshop.hobito.AuthResult
 import com.nesshop.hobito.features.authentication.domain.model.AuthUser
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +25,9 @@ actual class AuthRemoteDataSource {
     actual suspend fun signInWithEmail(
         email: String,
         password: String
-    ): AuthResult = runCatching {
+    ): Result<AuthUser> = runCatching {
         auth.signInWithEmailAndPassword(email, password).await()
         val user = auth.currentUser ?: error("Error")
-        AuthResult.Success(user = AuthUser(user.uid, user.email))
-    }.getOrElse { AuthResult.Error(it.message.orEmpty(), it) }
+        AuthUser(user.uid, user.email ?: "")
+    }
 }

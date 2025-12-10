@@ -4,7 +4,6 @@ import cocoapods.FirebaseAuth.FIRAuth
 import cocoapods.FirebaseAuth.FIRAuthDataResult
 import cocoapods.FirebaseAuth.FIRAuthStateDidChangeListenerHandle
 import cocoapods.FirebaseAuth.FIRUser
-import com.nesshop.hobito.AuthResult
 import com.nesshop.hobito.features.authentication.domain.model.AuthUser
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CancellableContinuation
@@ -36,24 +35,29 @@ actual class AuthRemoteDataSource {
     actual suspend fun signInWithEmail(
         email: String,
         password: String
-    ): AuthResult {
+    ): Result<AuthUser> {
         return withContext(Dispatchers.Main) {
-            suspendCancellableCoroutine<AuthResult> { cont: CancellableContinuation<AuthResult> ->
+            suspendCancellableCoroutine { cont: CancellableContinuation<Result<AuthUser>> ->
                 auth.signInWithEmail(
                     email = email,
                     password = password
                 ) { result: FIRAuthDataResult?, error: NSError? ->
                     if (!cont.isActive) return@signInWithEmail
+
                     when {
                         error != null -> {
-                            cont.resume(AuthResult.Error(error.localizedDescription))
+                            cont.resume(Result.failure(Exception(error.localizedDescription)))
                         }
                         result?.user() == null -> {
-                            cont.resume(AuthResult.Error("ERROR"))
+                            cont.resume(Result.failure(Exception("User not found after sign in")))
                         }
                         else -> {
                             val user = result.user()
-                            cont.resume(AuthResult.Success(AuthUser(user.uid(), user.email())))
+                            val authUser = AuthUser(
+                                uid = user.uid(),
+                                email = user.email() ?: ""
+                            )
+                            cont.resume(Result.success(authUser))
                         }
                     }
                 }
