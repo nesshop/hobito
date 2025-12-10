@@ -1,4 +1,4 @@
-package com.nesshop.hobito.di
+package com.nesshop.hobito.core.di
 
 import org.koin.core.module.Module
 

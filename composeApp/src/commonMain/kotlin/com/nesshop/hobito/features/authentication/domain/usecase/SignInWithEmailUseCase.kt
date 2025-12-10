@@ -1,6 +1,6 @@
-package com.nesshop.hobito.domain.usecase
+package com.nesshop.hobito.features.authentication.domain.usecase
 
-import com.nesshop.hobito.AuthRepository
+import com.nesshop.hobito.features.authentication.domain.repository.AuthRepository
 
 class SignInWithEmailUseCase(private val repository: AuthRepository) {
 

@@ -1,21 +1,20 @@
-package com.nesshop.hobito.data
+package com.nesshop.hobito.features.authentication.data.remote
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.nesshop.hobito.AuthRepository
 import com.nesshop.hobito.AuthResult
-import com.nesshop.hobito.domain.model.AuthUser
+import com.nesshop.hobito.features.authentication.domain.model.AuthUser
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
-class AuthRepositoryAndroid : AuthRepository {
+actual class AuthRemoteDataSource {
 
     private val auth = Firebase.auth
 
-    override val authState: Flow<AuthUser?> = callbackFlow {
+    actual val authState: Flow<AuthUser?> = callbackFlow {
         val listener = FirebaseAuth.AuthStateListener { fa: FirebaseAuth ->
             val user = fa.currentUser?.let { AuthUser(it.uid, it.email) }
             trySend(user)
@@ -24,7 +23,7 @@ class AuthRepositoryAndroid : AuthRepository {
         awaitClose { auth.removeAuthStateListener(listener) }
     }
 
-    override suspend fun signInWithEmail(
+    actual suspend fun signInWithEmail(
         email: String,
         password: String
     ): AuthResult = runCatching {

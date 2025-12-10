@@ -1,12 +1,11 @@
-package com.nesshop.hobito.data
+package com.nesshop.hobito.features.authentication.data.remote
 
 import cocoapods.FirebaseAuth.FIRAuth
 import cocoapods.FirebaseAuth.FIRAuthDataResult
 import cocoapods.FirebaseAuth.FIRAuthStateDidChangeListenerHandle
 import cocoapods.FirebaseAuth.FIRUser
-import com.nesshop.hobito.AuthRepository
 import com.nesshop.hobito.AuthResult
-import com.nesshop.hobito.domain.model.AuthUser
+import com.nesshop.hobito.features.authentication.domain.model.AuthUser
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.Dispatchers
@@ -19,21 +18,22 @@ import platform.Foundation.NSError
 import kotlin.coroutines.resume
 
 @OptIn(ExperimentalForeignApi::class)
-class AuthRepositoryIos : AuthRepository {
+
+actual class AuthRemoteDataSource {
 
     private val auth = FIRAuth.auth()
     private val _state = MutableStateFlow<AuthUser?>(null)
-    private var handle: FIRAuthStateDidChangeListenerHandle? = null
+
+    private var handle : FIRAuthStateDidChangeListenerHandle? = null
 
     init {
         handle = auth.addAuthStateDidChangeListener { _, user: FIRUser? ->
             _state.value = user?.let { AuthUser(it.uid(), it.email()) }
         }
     }
+    actual val authState: Flow<AuthUser?> = _state.asStateFlow()
 
-    override val authState: Flow<AuthUser?> = _state.asStateFlow()
-
-    override suspend fun signInWithEmail(
+    actual suspend fun signInWithEmail(
         email: String,
         password: String
     ): AuthResult {

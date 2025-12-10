@@ -1,6 +1,6 @@
 package com.nesshop.hobito
 
-import com.nesshop.hobito.domain.model.AuthUser
+import com.nesshop.hobito.features.authentication.domain.model.AuthUser
 
 interface AuthResult {
 

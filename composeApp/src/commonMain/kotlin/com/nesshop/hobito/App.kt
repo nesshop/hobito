@@ -2,9 +2,9 @@ package com.nesshop.hobito
 
 import androidx.compose.runtime.Composable
 import com.nesshop.hobito.designsystem.theme.HobitoTheme
-import com.nesshop.hobito.di.authModule
-import com.nesshop.hobito.di.platformModule
-import com.nesshop.hobito.ui.auth.login.LoginScreen
+import com.nesshop.hobito.core.di.authModule
+import com.nesshop.hobito.core.di.platformModule
+import com.nesshop.hobito.features.authentication.ui.login.LoginScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 
