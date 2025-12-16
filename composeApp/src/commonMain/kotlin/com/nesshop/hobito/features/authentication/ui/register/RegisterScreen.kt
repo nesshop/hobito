@@ -1,4 +1,4 @@
-package com.nesshop.hobito.features.authentication.ui.login
+package com.nesshop.hobito.features.authentication.ui.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +50,6 @@ import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
-import com.nesshop.hobito.features.authentication.domain.usecase.SignInWithEmailUseCase
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
 import com.nesshop.hobito.login_screen_apple_sign
@@ -62,26 +60,23 @@ import com.nesshop.hobito.login_screen_divider_text
 import com.nesshop.hobito.login_screen_email_label
 import com.nesshop.hobito.login_screen_google_logo_content_description
 import com.nesshop.hobito.login_screen_google_sign
-import com.nesshop.hobito.login_screen_have_an_account_text
-import com.nesshop.hobito.login_screen_login_button
-import com.nesshop.hobito.login_screen_password_label
-import com.nesshop.hobito.login_screen_sign_up_text
-import com.nesshop.hobito.login_screen_title
-import kotlinx.coroutines.launch
+import com.nesshop.hobito.register_screen_already_have_account
+import com.nesshop.hobito.register_screen_login_text
+import com.nesshop.hobito.register_screen_password_label
+import com.nesshop.hobito.register_screen_register_button
+import com.nesshop.hobito.register_screen_repeat_password_label
+import com.nesshop.hobito.register_screen_title
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.koinInject
 
 @Preview
 @Composable
-fun LoginScreen() {
-
-    val signIn = koinInject<SignInWithEmailUseCase>()
+fun RegisterScreen() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
+    var repeatPassword by remember { mutableStateOf("") }
 
     Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
         FancyBackground(modifier = Modifier.matchParentSize())
@@ -119,7 +114,7 @@ fun LoginScreen() {
                 fontFamily = FontFamily(Font(Res.font.baloo2_bold))
             )
             HobitoText(
-                stringResource(Res.string.login_screen_title),
+                stringResource(Res.string.register_screen_title),
             )
             Card(
                 modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -143,18 +138,20 @@ fun LoginScreen() {
                     HobitoTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = stringResource(Res.string.login_screen_password_label),
+                        label = stringResource(Res.string.register_screen_password_label),
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    HobitoTextField(
+                        value = repeatPassword,
+                        onValueChange = { repeatPassword = it },
+                        label = stringResource(Res.string.register_screen_repeat_password_label),
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp)
                     )
                     HobitoButton(
-                        text = stringResource(Res.string.login_screen_login_button),
-                        onClick = {
-                            scope.launch {
-                              val result = signIn(email, password)
-                                println(result)
-                            }
-                        },
+                        text = stringResource(Res.string.register_screen_register_button),
+                        onClick = { /*TODO*/ },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = false
                     )
@@ -178,7 +175,7 @@ fun LoginScreen() {
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         OutlinedButton(
-                            onClick = {},
+                            onClick = { /*TODO*/ },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp)
                         ) {
@@ -193,7 +190,7 @@ fun LoginScreen() {
                             )
                         }
                         OutlinedButton(
-                            onClick = {},
+                            onClick = { /*TODO*/ },
                             modifier = Modifier.fillMaxWidth(),
                             shape = RoundedCornerShape(12.dp)
                         ) {
@@ -210,8 +207,8 @@ fun LoginScreen() {
                     }
                 }
             }
-            HobitoClickableText(fullText = stringResource(Res.string.login_screen_have_an_account_text),
-                clickableText = stringResource(Res.string.login_screen_sign_up_text),
+            HobitoClickableText(fullText = stringResource(Res.string.register_screen_already_have_account),
+                clickableText = stringResource(Res.string.register_screen_login_text),
                 clickableColor = malibu,
                 onClickableTextClick = {TODO()})
         }

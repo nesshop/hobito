@@ -1,0 +1,59 @@
+package com.nesshop.hobito.designsystem.components.molecules
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+
+@Composable
+fun FancyBackground(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            val width = size.width
+            val height = size.height
+            val minDim = size.minDimension
+
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(Color(0xFF42A5F5), Color.Transparent),
+                    center = Offset(x = -minDim * 0.05f, y = -minDim * 0.05f),
+                    radius = minDim * 0.4f
+                ),
+                radius = minDim * 0.4f,
+                center = Offset(x = -minDim * 0.05f, y = -minDim * 0.05f)
+            )
+
+            // círculo abajo derecha (apenas fuera)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(Color(0xFFFF7043), Color.Transparent),
+                    center = Offset(x = width + minDim * 0.05f, y = height + minDim * 0.05f),
+                    radius = minDim * 0.45f
+                ),
+                radius = minDim * 0.45f,
+                center = Offset(x = width + minDim * 0.05f, y = height + minDim * 0.05f)
+            )
+
+            // círculo central (igual, centrado)
+            drawCircle(
+                brush = Brush.radialGradient(
+                    colors = listOf(Color(0xFFFFEB3B), Color.Transparent),
+                    center = Offset(x = width * 0.5f, y = height * 0.5f),
+                    radius = minDim * 0.3f
+                ),
+                radius = minDim * 0.3f,
+                center = Offset(x = width * 0.5f, y = height * 0.5f)
+            )
+        }
+    }
+}
