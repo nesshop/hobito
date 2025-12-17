@@ -13,7 +13,7 @@ import com.nesshop.hobito.features.authentication.ui.register.RegisterScreen
 fun NavigationWrapper(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Login){
         composable<Login> {
-            LoginScreen()
+            LoginScreen(navigateToRegister = { navController.navigate(Register)})
         }
         composable<Register> {
             RegisterScreen()

@@ -76,7 +76,7 @@ import org.koin.compose.koinInject
 
 @Preview
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navigateToRegister: () -> Unit) {
 
     val signIn = koinInject<SignInWithEmailUseCase>()
     var email by remember { mutableStateOf("") }
@@ -213,7 +213,8 @@ fun LoginScreen() {
             HobitoClickableText(fullText = stringResource(Res.string.login_screen_have_an_account_text),
                 clickableText = stringResource(Res.string.login_screen_sign_up_text),
                 clickableColor = malibu,
-                onClickableTextClick = {TODO()})
+                onClickableTextClick = { navigateToRegister()
+                println("clicakble")})
         }
     }
 }

@@ -4,10 +4,15 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -19,6 +24,7 @@ import org.jetbrains.compose.resources.Font
 
 private const val CLICKABLE_TAG = "CLICKABLE"
 private const val CLICKABLE_ANNOTATION = "clickable_action"
+
 @Composable
 fun HobitoClickableText(
     fullText: String,
@@ -54,21 +60,27 @@ fun HobitoClickableText(
         }
     }
 
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
     Text(
         text = annotatedString,
         modifier = modifier.pointerInput(Unit) {
             detectTapGestures { offset ->
-                annotatedString.getStringAnnotations(
-                    tag = CLICKABLE_TAG,
-                    start = offset.x.toInt(),
-                    end = offset.x.toInt()
-                ).firstOrNull()?.let {
-                    onClickableTextClick()
+                textLayoutResult?.let { layoutResult ->
+                    val position = layoutResult.getOffsetForPosition(offset)
+                    annotatedString.getStringAnnotations(
+                        tag = CLICKABLE_TAG,
+                        start = position,
+                        end = position
+                    ).firstOrNull()?.let {
+                        onClickableTextClick()
+                    }
                 }
             }
         },
         color = color,
         style = style,
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        onTextLayout = { textLayoutResult = it }
     )
 }
