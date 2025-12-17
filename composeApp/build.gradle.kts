@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.google.services)
     alias(libs.plugins.kotlinCocoapods)
+    alias (libs.plugins.kotlinxSerialization)
 }
 
 kotlin {
@@ -51,6 +52,7 @@ kotlin {
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
+            implementation(libs.navigation.compose)
         }
 
         commonTest.dependencies {
