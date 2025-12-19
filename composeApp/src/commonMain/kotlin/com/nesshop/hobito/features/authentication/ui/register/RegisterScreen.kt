@@ -73,7 +73,7 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(navigateToLogin: () -> Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
@@ -210,7 +210,7 @@ fun RegisterScreen() {
             HobitoClickableText(fullText = stringResource(Res.string.register_screen_already_have_account),
                 clickableText = stringResource(Res.string.register_screen_login_text),
                 clickableColor = malibu,
-                onClickableTextClick = {TODO()})
+                onClickableTextClick = {navigateToLogin()})
         }
     }
 }

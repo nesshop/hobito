@@ -213,8 +213,7 @@ fun LoginScreen(navigateToRegister: () -> Unit) {
             HobitoClickableText(fullText = stringResource(Res.string.login_screen_have_an_account_text),
                 clickableText = stringResource(Res.string.login_screen_sign_up_text),
                 clickableColor = malibu,
-                onClickableTextClick = { navigateToRegister()
-                println("clicakble")})
+                onClickableTextClick = { navigateToRegister()})
         }
     }
 }
