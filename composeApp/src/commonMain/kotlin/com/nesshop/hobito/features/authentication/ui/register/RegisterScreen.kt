@@ -70,10 +70,14 @@ import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.koin.compose.viewmodel.koinViewModel
 
 @Preview
 @Composable
 fun RegisterScreen(navigateToLogin: () -> Unit) {
+
+    val registerViewModel = koinViewModel<RegisterViewModel>()
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
@@ -131,23 +135,26 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                     HobitoTextField(
                         value = email,
                         onValueChange = { email = it },
-                        label = stringResource(Res.string.login_screen_email_label),
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(16.dp),
+                        label = stringResource(Res.string.login_screen_email_label),
+                        enabled = false
                     )
                     HobitoTextField(
                         value = password,
                         onValueChange = { password = it },
-                        label = stringResource(Res.string.register_screen_password_label),
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(16.dp),
+                        label = stringResource(Res.string.register_screen_password_label),
+                        enabled = false
                     )
                     HobitoTextField(
                         value = repeatPassword,
                         onValueChange = { repeatPassword = it },
-                        label = stringResource(Res.string.register_screen_repeat_password_label),
                         modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
+                        shape = RoundedCornerShape(16.dp),
+                        label = stringResource(Res.string.register_screen_repeat_password_label),
+                        enabled = false
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),

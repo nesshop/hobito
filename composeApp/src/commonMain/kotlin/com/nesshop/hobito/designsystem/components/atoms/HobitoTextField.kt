@@ -12,13 +12,15 @@ fun HobitoTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
-    label: String = ""
+    label: String = "",
+    enabled: Boolean
 ) {
     OutlinedTextField(
         modifier = modifier,
         value = value,
         onValueChange = onValueChange,
         label = { HobitoText(text = label) },
-        shape = shape
+        shape = shape,
+        enabled = enabled
     )
 }

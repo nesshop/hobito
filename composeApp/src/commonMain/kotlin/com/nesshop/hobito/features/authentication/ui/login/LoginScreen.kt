@@ -17,14 +17,19 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,7 +56,6 @@ import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
-import com.nesshop.hobito.features.authentication.domain.usecase.SignInWithEmailUseCase
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
 import com.nesshop.hobito.login_screen_apple_sign
@@ -67,153 +71,179 @@ import com.nesshop.hobito.login_screen_login_button
 import com.nesshop.hobito.login_screen_password_label
 import com.nesshop.hobito.login_screen_sign_up_text
 import com.nesshop.hobito.login_screen_title
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
-@Preview
 @Composable
-fun LoginScreen(navigateToRegister: () -> Unit) {
-
-    val signIn = koinInject<SignInWithEmailUseCase>()
+fun LoginScreen(
+    navigateToRegister: () -> Unit,
+    navigateToHome: () -> Unit,
+    viewModel: LoginViewModel = koinInject()
+) {
+    val uiState by viewModel.uiState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
-        FancyBackground(modifier = Modifier.matchParentSize())
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+    LaunchedEffect(uiState.isLoginSuccessful) {
+        if (uiState.isLoginSuccessful) {
+            navigateToHome()
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let {
+            snackbarHostState.showSnackbar(it)
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        containerColor = Color.Transparent
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .windowInsetsPadding(WindowInsets.systemBars)
+                .padding(paddingValues)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            FancyBackground(modifier = Modifier.matchParentSize())
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.add_icon),
-                    contentDescription = stringResource(Res.string.login_screen_circular_logo_content_description)
-                )
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.chat_icon),
-                    contentDescription = stringResource(Res.string.login_screen_chat_logo_content_description),
-                )
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.book_icon),
-                    contentDescription = stringResource(Res.string.login_screen_book_logo_content_description)
-                )
-            }
-            HobitoColoredTitle(
-                listOf(
-                    "H" to bitterSweet,
-                    "o" to golden_tainoi,
-                    "b" to malibu,
-                    "i" to java,
-                    "t" to yellow_orange,
-                    "o" to dodger_blue
-                ), texStyle = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
-                fontFamily = FontFamily(Font(Res.font.baloo2_bold))
-            )
-            HobitoText(
-                stringResource(Res.string.login_screen_title),
-            )
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.6f)
-                )
-            ) {
-
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    HobitoTextField(
-                        value = email,
-                        onValueChange = { email = it },
-                        label = stringResource(Res.string.login_screen_email_label),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.add_icon),
+                        contentDescription = stringResource(Res.string.login_screen_circular_logo_content_description)
                     )
-                    HobitoTextField(
-                        value = password,
-                        onValueChange = { password = it },
-                        label = stringResource(Res.string.login_screen_password_label),
-                        modifier = Modifier.fillMaxWidth(),
-                        shape = RoundedCornerShape(16.dp)
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.chat_icon),
+                        contentDescription = stringResource(Res.string.login_screen_chat_logo_content_description),
                     )
-                    HobitoButton(
-                        text = stringResource(Res.string.login_screen_login_button),
-                        onClick = {
-                            scope.launch {
-                              val result = signIn(email, password)
-                                println(result)
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = false
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.book_icon),
+                        contentDescription = stringResource(Res.string.login_screen_book_logo_content_description)
                     )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        HorizontalDivider(modifier = Modifier.weight(1f))
-                        HobitoText(
-                            text = stringResource(Res.string.login_screen_divider_text),
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        HorizontalDivider(modifier = Modifier.weight(1f))
-                    }
-
+                }
+                HobitoColoredTitle(
+                    listOf(
+                        "H" to bitterSweet,
+                        "o" to golden_tainoi,
+                        "b" to malibu,
+                        "i" to java,
+                        "t" to yellow_orange,
+                        "o" to dodger_blue
+                    ), texStyle = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
+                    fontFamily = FontFamily(Font(Res.font.baloo2_bold))
+                )
+                HobitoText(
+                    stringResource(Res.string.login_screen_title),
+                )
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.6f)
+                    )
+                ) {
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        OutlinedButton(
-                            onClick = {},
+                        HobitoTextField(
+                            value = email,
+                            onValueChange = { email = it },
+                            label = stringResource(Res.string.login_screen_email_label),
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(16.dp),
+                            enabled = !uiState.isLoading
+                        )
+                        HobitoTextField(
+                            value = password,
+                            onValueChange = { password = it },
+                            label = stringResource(Res.string.login_screen_password_label),
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(16.dp),
+                            enabled = !uiState.isLoading
+                        )
+                        HobitoButton(
+                            text = stringResource(Res.string.login_screen_login_button),
+                            onClick = {
+                                viewModel.onEvent(LoginEvent.OnLogin(email, password))
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                            enabled = email.isNotBlank() && password.isNotBlank() && !uiState.isLoading
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Image(
-                                painter = painterResource(Res.drawable.google_logo),
-                                contentDescription = stringResource(Res.string.login_screen_google_logo_content_description),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            HorizontalDivider(modifier = Modifier.weight(1f))
                             HobitoText(
-                                text = stringResource(Res.string.login_screen_google_sign)
+                                text = stringResource(Res.string.login_screen_divider_text),
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
+                            HorizontalDivider(modifier = Modifier.weight(1f))
                         }
-                        OutlinedButton(
-                            onClick = {},
+
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Image(
-                                painter = painterResource(Res.drawable.apple_logo),
-                                contentDescription = stringResource(Res.string.login_screen_apple_logo_content_description),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            HobitoText(
-                                text = stringResource(Res.string.login_screen_apple_sign)
-                            )
+                            OutlinedButton(
+                                onClick = { /* TODO: Handle Google Sign in */ },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                enabled = !uiState.isLoading
+                            ) {
+                                Image(
+                                    painter = painterResource(Res.drawable.google_logo),
+                                    contentDescription = stringResource(Res.string.login_screen_google_logo_content_description),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                HobitoText(
+                                    text = stringResource(Res.string.login_screen_google_sign)
+                                )
+                            }
+                            OutlinedButton(
+                                onClick = { /* TODO: Handle Apple Sign in */ },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                enabled = !uiState.isLoading
+                            ) {
+                                Image(
+                                    painter = painterResource(Res.drawable.apple_logo),
+                                    contentDescription = stringResource(Res.string.login_screen_apple_logo_content_description),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                HobitoText(
+                                    text = stringResource(Res.string.login_screen_apple_sign)
+                                )
+                            }
                         }
                     }
                 }
+                HobitoClickableText(fullText = stringResource(Res.string.login_screen_have_an_account_text),
+                    clickableText = stringResource(Res.string.login_screen_sign_up_text),
+                    clickableColor = malibu,
+                    onClickableTextClick = { if (!uiState.isLoading) navigateToRegister() })
             }
-            HobitoClickableText(fullText = stringResource(Res.string.login_screen_have_an_account_text),
-                clickableText = stringResource(Res.string.login_screen_sign_up_text),
-                clickableColor = malibu,
-                onClickableTextClick = { navigateToRegister()})
+
+            if (uiState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
         }
     }
 }
