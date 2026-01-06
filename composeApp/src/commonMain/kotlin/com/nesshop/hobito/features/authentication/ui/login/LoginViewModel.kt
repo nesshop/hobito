@@ -9,15 +9,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val signInWithEmailUseCase: SignInWithEmailUseCase
-) : BaseViewModel<LoginState, LoginEvent>() {
+    private val signInWithEmailUseCase: SignInWithEmailUseCase,
+) : BaseViewModel<LoginState, LoginAction, LoginUiEffect>() {
 
     private val _uiState = MutableStateFlow(LoginState())
     override val uiState = _uiState.asStateFlow()
 
-    override fun onEvent(event: LoginEvent) {
+    override fun onEvent(event: LoginAction) {
         when (event) {
-            is LoginEvent.OnLogin -> {
+            is LoginAction.SubmitLogin -> {
                 signInWithEmail(event.email, event.password)
             }
         }
@@ -28,19 +28,14 @@ class LoginViewModel(
             _uiState.update { it.copy(isLoading = true) }
             val result = signInWithEmailUseCase(email, password)
             result.onSuccess {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isLoginSuccessful = true
-                    )
-                }
+                _effects.send(LoginUiEffect.NavigateToHome)
             }.onFailure { throwable ->
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = throwable.message
-                    )
-                }
+                _effects.send(LoginUiEffect.ShowError(throwable.message ?: "Unknown error"))
+            }
+            _uiState.update {
+                it.copy(
+                    isLoading = false
+                )
             }
         }
     }

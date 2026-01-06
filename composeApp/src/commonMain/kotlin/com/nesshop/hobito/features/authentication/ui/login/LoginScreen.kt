@@ -87,27 +87,23 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
-    LaunchedEffect(uiState.isLoginSuccessful) {
-        if (uiState.isLoginSuccessful) {
-            navigateToHome()
+    LaunchedEffect(Unit) {
+            viewModel.effects.collect { effect ->
+                when (effect) {
+                    LoginUiEffect.NavigateToHome -> {
+                        navigateToHome()
+                    }
+                    is LoginUiEffect.ShowError -> {
+                        snackbarHostState.showSnackbar(effect.message)
+                    }
+                }
         }
     }
 
-    LaunchedEffect(uiState.error) {
-        uiState.error?.let {
-            snackbarHostState.showSnackbar(it)
-        }
-    }
-
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = Color.Transparent
-    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .windowInsetsPadding(WindowInsets.systemBars)
-                .padding(paddingValues)
         ) {
             FancyBackground(modifier = Modifier.matchParentSize())
             Column(
@@ -176,7 +172,7 @@ fun LoginScreen(
                         HobitoButton(
                             text = stringResource(Res.string.login_screen_login_button),
                             onClick = {
-                                viewModel.onEvent(LoginEvent.OnLogin(email, password))
+                                viewModel.onEvent(LoginAction.SubmitLogin(email, password))
                             },
                             modifier = Modifier.fillMaxWidth(),
                             enabled = email.isNotBlank() && password.isNotBlank() && !uiState.isLoading
@@ -244,6 +240,8 @@ fun LoginScreen(
             if (uiState.isLoading) {
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
-        }
+
+            SnackbarHost(hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter))
     }
 }

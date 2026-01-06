@@ -4,7 +4,7 @@ import com.nesshop.hobito.core.ui.viewmodel.BaseViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class RegisterViewModel : BaseViewModel<RegisterState, RegisterEvent>() {
+class RegisterViewModel() : BaseViewModel<RegisterState, RegisterEvent, RegisterUiEffect>() {
 
     private val _uiState = MutableStateFlow(RegisterState())
     override val uiState = _uiState.asStateFlow()
