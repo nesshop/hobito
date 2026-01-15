@@ -64,7 +64,7 @@ kotlin {
         version = "1.0.0"
         summary = "Hobito"
         homepage = "https://github.com/nesshop/hobito"
-        ios.deploymentTarget = "18.2"
+        ios.deploymentTarget = "15.8.5"
 
         framework {
             baseName = "composeApp"

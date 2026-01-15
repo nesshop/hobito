@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'Hobito'
     spec.vendored_frameworks      = 'build/cocoapods/framework/composeApp.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target    = '18.2'
+    spec.ios.deployment_target    = '15.8.5'
     spec.dependency 'FirebaseAuth'
     spec.dependency 'FirebaseCore'
                 
