@@ -1,9 +1,9 @@
 package com.nesshop.hobito.core.di
 
-import com.nesshop.hobito.features.authentication.data.repository.AuthRepositoryImpl
-import com.nesshop.hobito.features.authentication.domain.repository.AuthRepository
-import com.nesshop.hobito.features.authentication.domain.usecase.ObserveAuthStateUseCase
-import com.nesshop.hobito.features.authentication.domain.usecase.SignInWithEmailUseCase
+import com.nesshop.hobito.data.repository.AuthRepositoryImpl
+import com.nesshop.hobito.domain.repository.AuthRepository
+import com.nesshop.hobito.domain.usecase.auth.ObserveAuthStateUseCase
+import com.nesshop.hobito.domain.usecase.auth.SignInWithEmailUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 

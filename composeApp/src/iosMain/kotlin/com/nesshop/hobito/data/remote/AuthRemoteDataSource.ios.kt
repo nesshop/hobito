@@ -1,10 +1,10 @@
-package com.nesshop.hobito.features.authentication.data.remote
+package com.nesshop.hobito.data.remote
 
 import cocoapods.FirebaseAuth.FIRAuth
 import cocoapods.FirebaseAuth.FIRAuthDataResult
 import cocoapods.FirebaseAuth.FIRAuthStateDidChangeListenerHandle
 import cocoapods.FirebaseAuth.FIRUser
-import com.nesshop.hobito.features.authentication.domain.model.AuthUser
+import com.nesshop.hobito.domain.model.AuthUser
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.Dispatchers
@@ -14,12 +14,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import platform.Foundation.NSError
+import kotlin.Result
 import kotlin.coroutines.resume
-
 @OptIn(ExperimentalForeignApi::class)
 
 actual class AuthRemoteDataSource {
-
     private val auth = FIRAuth.auth()
     private val _state = MutableStateFlow<AuthUser?>(null)
 

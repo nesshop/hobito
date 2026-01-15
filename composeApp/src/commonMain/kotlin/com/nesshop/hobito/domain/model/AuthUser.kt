@@ -1,4 +1,4 @@
-package com.nesshop.hobito.features.authentication.domain.model
+package com.nesshop.hobito.domain.model
 
 data class AuthUser(
     val uid: String,

@@ -1,8 +1,8 @@
-package com.nesshop.hobito.features.authentication.data.repository
+package com.nesshop.hobito.data.repository
 
-import com.nesshop.hobito.features.authentication.data.remote.AuthRemoteDataSource
-import com.nesshop.hobito.features.authentication.domain.model.AuthUser
-import com.nesshop.hobito.features.authentication.domain.repository.AuthRepository
+import com.nesshop.hobito.data.remote.AuthRemoteDataSource
+import com.nesshop.hobito.domain.model.AuthUser
+import com.nesshop.hobito.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.Flow
 
 class AuthRepositoryImpl(private val remoteDataSource: AuthRemoteDataSource) : AuthRepository {

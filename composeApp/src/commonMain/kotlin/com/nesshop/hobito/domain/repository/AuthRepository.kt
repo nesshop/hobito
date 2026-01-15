@@ -1,6 +1,6 @@
-package com.nesshop.hobito.features.authentication.domain.repository
+package com.nesshop.hobito.domain.repository
 
-import com.nesshop.hobito.features.authentication.domain.model.AuthUser
+import com.nesshop.hobito.domain.model.AuthUser
 import kotlinx.coroutines.flow.Flow
 
 interface AuthRepository {

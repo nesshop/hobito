@@ -1,16 +1,15 @@
-package com.nesshop.hobito.features.authentication.data.remote
+package com.nesshop.hobito.data.remote
 
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.nesshop.hobito.features.authentication.domain.model.AuthUser
+import com.nesshop.hobito.domain.model.AuthUser
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 actual class AuthRemoteDataSource {
-
     private val auth = Firebase.auth
 
     actual val authState: Flow<AuthUser?> = callbackFlow {
