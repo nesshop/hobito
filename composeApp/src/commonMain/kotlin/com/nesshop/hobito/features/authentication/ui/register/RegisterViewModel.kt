@@ -4,15 +4,10 @@ import com.nesshop.hobito.core.ui.viewmodel.BaseViewModel
 import com.nesshop.hobito.features.authentication.ui.register.contract.RegisterEvent
 import com.nesshop.hobito.features.authentication.ui.register.contract.RegisterState
 import com.nesshop.hobito.features.authentication.ui.register.contract.RegisterUiEffect
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
-class RegisterViewModel() : BaseViewModel<RegisterState, RegisterEvent, RegisterUiEffect>() {
+class RegisterViewModel() : BaseViewModel<RegisterState, RegisterEvent, RegisterUiEffect>(initialState = RegisterState()) {
 
-    private val _uiState = MutableStateFlow(RegisterState())
-    override val uiState = _uiState.asStateFlow()
-
-    override fun onEvent(event: RegisterEvent) {
+    override suspend fun handleEvent(event: RegisterEvent) {
         when (event) {
             is RegisterEvent.OnRegister -> onRegister()
         }

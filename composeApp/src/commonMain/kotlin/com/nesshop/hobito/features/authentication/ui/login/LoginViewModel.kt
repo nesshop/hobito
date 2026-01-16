@@ -13,12 +13,9 @@ import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val signInWithEmailUseCase: SignInWithEmailUseCase,
-) : BaseViewModel<LoginState, LoginAction, LoginUiEffect>() {
+) : BaseViewModel<LoginState, LoginAction, LoginUiEffect>(initialState = LoginState()) {
 
-    private val _uiState = MutableStateFlow(LoginState())
-    override val uiState = _uiState.asStateFlow()
-
-    override fun onEvent(event: LoginAction) {
+    override suspend fun handleEvent(event: LoginAction) {
         when (event) {
             is LoginAction.SubmitLogin -> {
                 signInWithEmail(event.email, event.password)
@@ -26,20 +23,16 @@ class LoginViewModel(
         }
     }
 
-    private fun signInWithEmail(email: String, password: String) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            val result = signInWithEmailUseCase(email, password)
-            result.onSuccess {
-                _effects.send(LoginUiEffect.NavigateToHome)
-            }.onFailure { throwable ->
-                _effects.send(LoginUiEffect.ShowError(throwable.message ?: "Unknown error"))
-            }
-            _uiState.update {
-                it.copy(
-                    isLoading = false
-                )
-            }
+    private suspend fun signInWithEmail(email: String, password: String) {
+        setState { copy(isLoading = true) }
+
+        val result = signInWithEmailUseCase(email, password)
+
+        result.onSuccess {
+            sendEffect(LoginUiEffect.NavigateToHome)
+        }.onFailure { throwable ->
+            sendEffect(LoginUiEffect.ShowError(throwable.message ?: "Unknown error"))
         }
+        setState { copy(isLoading = false) }
     }
 }

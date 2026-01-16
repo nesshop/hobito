@@ -174,7 +174,7 @@ fun LoginScreen(
                         HobitoButton(
                             text = stringResource(Res.string.login_screen_login_button),
                             onClick = {
-                                viewModel.onEvent(LoginAction.SubmitLogin(email, password))
+                                viewModel.dispatchEvent(LoginAction.SubmitLogin(email, password))
                             },
                             modifier = Modifier.fillMaxWidth(),
                             enabled = email.isNotBlank() && password.isNotBlank() && !uiState.isLoading
