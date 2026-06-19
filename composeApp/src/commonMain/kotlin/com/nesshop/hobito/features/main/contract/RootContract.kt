@@ -6,5 +6,5 @@ sealed interface RootState {
     data object Unauthenticated : RootState
 }
 
-sealed interface RootEvent
+sealed interface RootIntent
 sealed interface RootUiEffect

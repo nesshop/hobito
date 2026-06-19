@@ -21,7 +21,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -56,7 +55,7 @@ import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginAction
+import com.nesshop.hobito.features.authentication.ui.login.contract.LoginIntent
 import com.nesshop.hobito.features.authentication.ui.login.contract.LoginUiEffect
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
@@ -174,7 +173,7 @@ fun LoginScreen(
                         HobitoButton(
                             text = stringResource(Res.string.login_screen_login_button),
                             onClick = {
-                                viewModel.dispatchEvent(LoginAction.SubmitLogin(email, password))
+                                viewModel.onIntent(LoginIntent.SubmitLogin(email, password))
                             },
                             modifier = Modifier.fillMaxWidth(),
                             enabled = email.isNotBlank() && password.isNotBlank() && !uiState.isLoading

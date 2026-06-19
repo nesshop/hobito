@@ -17,10 +17,15 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -50,6 +55,8 @@ import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
+import com.nesshop.hobito.features.authentication.ui.register.contract.RegisterIntent
+import com.nesshop.hobito.features.authentication.ui.register.contract.RegisterUiEffect
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
 import com.nesshop.hobito.login_screen_apple_sign
@@ -69,17 +76,29 @@ import com.nesshop.hobito.register_screen_title
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-import org.koin.compose.viewmodel.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
-fun RegisterScreen(navigateToLogin: () -> Unit) {
+fun RegisterScreen(
+    navigateToLogin: () -> Unit,
+    navigateToHome: () -> Unit,
+    viewModel: RegisterViewModel = koinInject()
+) {
 
-    val registerViewModel = koinViewModel<RegisterViewModel>()
-
+    val uiState by viewModel.uiState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var repeatPassword by remember { mutableStateOf("") }
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                RegisterUiEffect.NavigateToHome -> navigateToHome()
+                is RegisterUiEffect.ShowError -> snackbarHostState.showSnackbar(effect.message)
+            }
+        }
+    }
 
     Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
         FancyBackground(modifier = Modifier.matchParentSize())
@@ -137,7 +156,7 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.login_screen_email_label),
-                        enabled = false
+                        enabled = !uiState.isLoading
                     )
                     HobitoTextField(
                         value = password,
@@ -145,7 +164,7 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_password_label),
-                        enabled = false
+                        enabled = !uiState.isLoading
                     )
                     HobitoTextField(
                         value = repeatPassword,
@@ -153,13 +172,13 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_repeat_password_label),
-                        enabled = false
+                        enabled = !uiState.isLoading
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),
-                        onClick = { /*TODO*/ },
+                        onClick = { viewModel.onIntent(RegisterIntent.SubmitRegister(email, password)) },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = false
+                        enabled = email.isNotBlank() && password.isNotBlank() && password == repeatPassword && !uiState.isLoading
                     )
 
                     Row(
@@ -183,7 +202,8 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                         OutlinedButton(
                             onClick = { /*TODO*/ },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = !uiState.isLoading
                         ) {
                             Image(
                                 painter = painterResource(Res.drawable.google_logo),
@@ -198,7 +218,8 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
                         OutlinedButton(
                             onClick = { /*TODO*/ },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
+                            shape = RoundedCornerShape(12.dp),
+                            enabled = !uiState.isLoading
                         ) {
                             Image(
                                 painter = painterResource(Res.drawable.apple_logo),
@@ -216,7 +237,16 @@ fun RegisterScreen(navigateToLogin: () -> Unit) {
             HobitoClickableText(fullText = stringResource(Res.string.register_screen_already_have_account),
                 clickableText = stringResource(Res.string.register_screen_login_text),
                 clickableColor = malibu,
-                onClickableTextClick = {navigateToLogin()})
+                onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() })
         }
+
+        if (uiState.isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        }
+
+        SnackbarHost(
+            hostState = snackbarHostState,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
     }
 }

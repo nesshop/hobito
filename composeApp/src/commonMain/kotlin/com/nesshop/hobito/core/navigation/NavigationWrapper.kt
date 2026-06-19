@@ -29,12 +29,20 @@ fun NavigationWrapper(navController: NavHostController, rootState: RootState) {
             )
         }
         composable<Register> {
-            RegisterScreen(navigateToLogin = {
-                navController.navigate(Login) {
-                    popUpTo(0) { inclusive = true }
-                    launchSingleTop = true
+            RegisterScreen(
+                navigateToLogin = {
+                    navController.navigate(Login) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
+                },
+                navigateToHome = {
+                    navController.navigate(Home) {
+                        popUpTo(0) { inclusive = true }
+                        launchSingleTop = true
+                    }
                 }
-            })
+            )
         }
 
         composable<Home> {
