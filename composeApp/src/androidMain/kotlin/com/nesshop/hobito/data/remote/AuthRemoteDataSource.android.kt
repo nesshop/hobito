@@ -29,4 +29,14 @@ actual class AuthRemoteDataSource {
         val user = auth.currentUser ?: error("Error")
         AuthUser(user.uid, user.email ?: "")
     }
+
+    actual suspend fun createUserWithEmail(
+        email: String,
+        password: String
+    ): Result<AuthUser> = runCatching {
+        auth.createUserWithEmailAndPassword(email, password).await()
+        val user = auth.currentUser ?: error("User creation failed")
+        AuthUser(user.uid, user.email ?: "")
+    }
+    
 }

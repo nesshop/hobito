@@ -63,4 +63,37 @@ actual class AuthRemoteDataSource {
             }
         }
     }
+
+    actual suspend fun createUserWithEmail(
+        email: String,
+        password: String
+    ): Result<AuthUser> {
+        return withContext(Dispatchers.Main) {
+            suspendCancellableCoroutine { cont: CancellableContinuation<Result<AuthUser>> ->
+                auth.createUserWithEmail(
+                    email = email,
+                    password = password
+                ) { result: FIRAuthDataResult?, error: NSError? ->
+                    if (!cont.isActive) return@createUserWithEmail
+
+                    when {
+                        error != null -> {
+                            cont.resume(Result.failure(Exception(error.localizedDescription)))
+                        }
+                        result?.user() == null -> {
+                            cont.resume(Result.failure(Exception("User creation failed")))
+                        }
+                        else -> {
+                            val user = result.user()
+                            val authUser = AuthUser(
+                                uid = user.uid(),
+                                email = user.email() ?: ""
+                            )
+                            cont.resume(Result.success(authUser))
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

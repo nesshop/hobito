@@ -72,7 +72,6 @@ import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.viewmodel.koinViewModel
 
-@Preview
 @Composable
 fun RegisterScreen(navigateToLogin: () -> Unit) {
 

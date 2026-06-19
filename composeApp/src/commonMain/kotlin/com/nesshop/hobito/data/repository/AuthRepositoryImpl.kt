@@ -14,4 +14,11 @@ class AuthRepositoryImpl(private val remoteDataSource: AuthRemoteDataSource) : A
     ): Result<AuthUser> {
         return remoteDataSource.signInWithEmail(email, password)
     }
+
+    override suspend fun createUserWithEmail(
+        email: String,
+        password: String
+    ): Result<AuthUser> {
+        return remoteDataSource.createUserWithEmail(email, password)
+    }
 }
