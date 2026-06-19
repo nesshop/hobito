@@ -10,10 +10,13 @@ import com.nesshop.hobito.core.navigation.Route.Login
 import com.nesshop.hobito.core.navigation.Route.Register
 import com.nesshop.hobito.features.authentication.ui.login.LoginScreen
 import com.nesshop.hobito.features.authentication.ui.register.RegisterScreen
+import com.nesshop.hobito.features.main.contract.RootState
 
 @Composable
-fun NavigationWrapper(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = Login) {
+fun NavigationWrapper(navController: NavHostController, rootState: RootState) {
+    val startDestination = if (rootState is RootState.Authenticated) Home else Login
+
+    NavHost(navController = navController, startDestination = startDestination) {
         composable<Login> {
             LoginScreen(
                 navigateToRegister = { navController.navigate(Register) },
