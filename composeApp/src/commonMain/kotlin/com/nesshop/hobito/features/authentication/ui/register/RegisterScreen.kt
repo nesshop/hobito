@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -153,10 +154,16 @@ fun RegisterScreen(
                     HobitoTextField(
                         value = email,
                         onValueChange = { email = it },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                            if (!it.isFocused) {
+                                viewModel.onIntent(RegisterIntent.ValidateEmail(email))
+                            }
+                        },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.login_screen_email_label),
-                        enabled = !uiState.isLoading
+                        enabled = !uiState.isLoading,
+                        isError = uiState.emailError != null,
+                        supportingText = uiState.emailError?.let { stringResource(it) }
                     )
                     HobitoTextField(
                         value = password,

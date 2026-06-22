@@ -13,7 +13,9 @@ fun HobitoTextField(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     label: String = "",
-    enabled: Boolean
+    enabled: Boolean = true,
+    isError: Boolean = false,
+    supportingText: String? = null
 ) {
     OutlinedTextField(
         modifier = modifier,
@@ -21,6 +23,10 @@ fun HobitoTextField(
         onValueChange = onValueChange,
         label = { HobitoText(text = label) },
         shape = shape,
-        enabled = enabled
+        enabled = enabled,
+        isError = isError,
+        supportingText = supportingText?.let {
+            {HobitoText(text = it, color = MaterialTheme.colorScheme.error)}
+        }
     )
 }

@@ -20,6 +20,7 @@
     <string name="register_screen_register_button">Sign up</string>
     <string name="register_screen_already_have_account">Already have an account? Log in</string>
     <string name="register_screen_login_text">Log in</string>
+    <string name="register_screen_email_error">Invalid email</string>
 
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Circular logo</string>
