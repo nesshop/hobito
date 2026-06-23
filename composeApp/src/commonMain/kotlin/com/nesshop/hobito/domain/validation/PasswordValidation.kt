@@ -1,8 +1,8 @@
 package com.nesshop.hobito.domain.validation
 
-sealed class PasswordValidation {
-    data object Valid : PasswordValidation()
-    data class Invalid(val reasons: List<PasswordValidationError>) : PasswordValidation()
+sealed interface PasswordValidation {
+    data object Valid : PasswordValidation
+    data class Invalid(val reasons: List<PasswordValidationError>) : PasswordValidation
 }
 
 enum class PasswordValidationError {
@@ -14,6 +14,7 @@ enum class PasswordValidationError {
 
 object PasswordValidator {
     private const val MIN_LENGTH = 8
+    private const val SPECIAL_CHARACTERS = "!@#$%^&*()_+-=[]{}|;':\",./<>?"
 
     fun validate(password: String): PasswordValidation {
         val errors = mutableListOf<PasswordValidationError>()
@@ -27,11 +28,14 @@ object PasswordValidator {
         if (password.none { it.isDigit() }) {
             errors.add(PasswordValidationError.NO_NUMBER)
         }
-
-        return if (errors.isEmpty()) {
-            PasswordValidation.Valid
-        } else {
-            PasswordValidation.Invalid(errors)
+        if (password.none { it in SPECIAL_CHARACTERS }) {
+            errors.add(PasswordValidationError.NO_SPECIAL_CHARACTER)
         }
+
+            return if (errors.isEmpty()) {
+                PasswordValidation.Valid
+            } else {
+                PasswordValidation.Invalid(errors)
+            }
     }
 }

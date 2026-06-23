@@ -168,18 +168,30 @@ fun RegisterScreen(
                     HobitoTextField(
                         value = password,
                         onValueChange = { password = it },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                            if (!it.isFocused) {
+                                viewModel.onIntent(RegisterIntent.ValidatePassword(password))
+                            }
+                        },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_password_label),
-                        enabled = !uiState.isLoading
+                        enabled = !uiState.isLoading,
+                        isError = uiState.passwordError != null,
+                        supportingText = uiState.passwordError?.let { stringResource(it) }
                     )
                     HobitoTextField(
                         value = repeatPassword,
                         onValueChange = { repeatPassword = it },
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                            if (!it.isFocused) {
+                                viewModel.onIntent(RegisterIntent.ValidateRepeatPassword(password, repeatPassword))
+                            }
+                        },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_repeat_password_label),
-                        enabled = !uiState.isLoading
+                        enabled = !uiState.isLoading,
+                        isError = uiState.repeatPasswordError != null,
+                        supportingText = uiState.repeatPasswordError?.let { stringResource(it) }
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),
