@@ -9,9 +9,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -108,10 +110,13 @@ fun RegisterScreen(
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
+    Box(modifier = Modifier.fillMaxSize()) {
         FancyBackground(modifier = Modifier.matchParentSize())
         Column(
-            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
+            modifier = Modifier.fillMaxSize()
+                .systemBarsPadding()
+                .imePadding()
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -161,7 +166,7 @@ fun RegisterScreen(
                     HobitoTextField(
                         value = uiState.email,
                         onValueChange = { viewModel.onIntent(RegisterIntent.OnEmailChanged(it)) },
-                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                        modifier = Modifier.fillMaxWidth().onFocusChanged {
                             if (!it.isFocused && uiState.email.isNotBlank()) {
                                 viewModel.onIntent(RegisterIntent.ValidateEmail(uiState.email))
                             }
@@ -179,7 +184,7 @@ fun RegisterScreen(
                     HobitoTextField(
                         value = uiState.password,
                         onValueChange = { viewModel.onIntent(RegisterIntent.OnPasswordChanged(it)) },
-                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                        modifier = Modifier.fillMaxWidth().onFocusChanged {
                             if (!it.isFocused && uiState.password.isNotBlank()) {
                                 viewModel.onIntent((RegisterIntent.ValidatePassword(uiState.password)))
                             }
@@ -199,17 +204,29 @@ fun RegisterScreen(
                                 Icons.Filled.Visibility
                             else Icons.Filled.VisibilityOff
 
-                            IconButton(onClick = {viewModel.onIntent(RegisterIntent.TogglePasswordVisibility)}) {
+                            IconButton(onClick = { viewModel.onIntent(RegisterIntent.TogglePasswordVisibility) }) {
                                 Icon(imageVector = image, contentDescription = null)
                             }
                         }
                     )
                     HobitoTextField(
                         value = uiState.repeatPassword,
-                        onValueChange = { viewModel.onIntent(RegisterIntent.OnRepeatPasswordChanged(uiState.password, it)) },
-                        modifier = Modifier.fillMaxWidth().onFocusChanged{
+                        onValueChange = {
+                            viewModel.onIntent(
+                                RegisterIntent.OnRepeatPasswordChanged(
+                                    uiState.password,
+                                    it
+                                )
+                            )
+                        },
+                        modifier = Modifier.fillMaxWidth().onFocusChanged {
                             if (!it.isFocused && uiState.repeatPassword.isNotBlank()) {
-                                viewModel.onIntent(RegisterIntent.ValidateRepeatPassword(uiState.password, uiState.repeatPassword))
+                                viewModel.onIntent(
+                                    RegisterIntent.ValidateRepeatPassword(
+                                        uiState.password,
+                                        uiState.repeatPassword
+                                    )
+                                )
                             }
                         },
                         shape = RoundedCornerShape(16.dp),
@@ -227,14 +244,21 @@ fun RegisterScreen(
                                 Icons.Filled.Visibility
                             else Icons.Filled.VisibilityOff
 
-                            IconButton(onClick = {viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility)}) {
+                            IconButton(onClick = { viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility) }) {
                                 Icon(imageVector = image, contentDescription = null)
                             }
                         }
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),
-                        onClick = { viewModel.onIntent(RegisterIntent.SubmitRegister(uiState.email, uiState.password)) },
+                        onClick = {
+                            viewModel.onIntent(
+                                RegisterIntent.SubmitRegister(
+                                    uiState.email,
+                                    uiState.password
+                                )
+                            )
+                        },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = uiState.isFormValid && !uiState.isLoading
                     )
@@ -292,7 +316,8 @@ fun RegisterScreen(
                     }
                 }
             }
-            HobitoClickableText(fullText = stringResource(Res.string.register_screen_already_have_account),
+            HobitoClickableText(
+                fullText = stringResource(Res.string.register_screen_already_have_account),
                 clickableText = stringResource(Res.string.register_screen_login_text),
                 clickableColor = malibu,
                 onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() })
