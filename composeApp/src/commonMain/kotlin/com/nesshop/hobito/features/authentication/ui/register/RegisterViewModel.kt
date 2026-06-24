@@ -19,26 +19,66 @@ class RegisterViewModel(private val createUserWithEmailUseCase: CreateUserWithEm
     override suspend fun handleIntent(intent: RegisterIntent) {
         when (intent) {
             is RegisterIntent.SubmitRegister -> submitRegistration(intent.email, intent.password)
-            is RegisterIntent.ValidateEmail -> validateEmail(intent.email)
-            is RegisterIntent.ValidatePassword -> validatePassword(intent.password)
-            is RegisterIntent.ValidateRepeatPassword -> validateRepeatPassword(
-                intent.password,
-                intent.repeatPassword
-            )
+            is RegisterIntent.ValidateEmail -> {
+                validateEmail(intent.email)
+                updateFormValidState()
+            }
+
+            is RegisterIntent.ValidatePassword -> {
+                validatePassword(intent.password)
+                updateFormValidState()
+            }
+
+            is RegisterIntent.ValidateRepeatPassword -> {
+                validateRepeatPassword(
+                    intent.password,
+                    intent.repeatPassword
+                )
+                updateFormValidState()
+            }
+
+            is RegisterIntent.OnEmailChanged -> {
+                setState { copy(email = intent.email) }
+                if (uiState.value.emailError != null) validateEmail(intent.email)
+                updateFormValidState()
+            }
+
+            is RegisterIntent.OnPasswordChanged -> {
+                setState { copy(password = intent.password) }
+                if (uiState.value.passwordError != null) validatePassword(intent.password)
+                updateFormValidState()
+            }
+
+            is RegisterIntent.OnRepeatPasswordChanged -> {
+                setState { copy(repeatPassword = intent.repeatPassword) }
+                if (uiState.value.repeatPasswordError != null) validateRepeatPassword(
+                    intent.password,
+                    intent.repeatPassword
+                )
+                updateFormValidState()
+            }
+
+            RegisterIntent.TogglePasswordVisibility -> {
+                setState { copy(isPasswordVisible = !isPasswordVisible) }
+            }
+            RegisterIntent.ToggleRepeatPasswordVisibility -> {
+                setState { copy(isRepeatPasswordVisible = !isRepeatPasswordVisible) }
+            }
         }
     }
 
+    private fun updateFormValidState() {
+        val state = uiState.value
+        val isEmailValid = EmailValidator.validate(state.email)
+        val isPassWordValid = PasswordValidator.validate(state.password) is PasswordValidation.Valid
+        val passwordsMatch =
+            state.password == state.repeatPassword && state.repeatPassword.isNotEmpty()
 
-    private suspend fun submitRegistration(email: String, password: String) {
-        setState { copy(isLoading = true) }
-        val result = createUserWithEmailUseCase(email, password)
-        result.onSuccess {
-            sendEffect(RegisterUiEffect.NavigateToHome)
-        }.onFailure { throwable ->
-            sendEffect(RegisterUiEffect.ShowError(throwable.message ?: "Unknown error"))
+        setState {
+            copy(isFormValid = isEmailValid && isPassWordValid && passwordsMatch)
         }
-        setState { copy(isLoading = false) }
     }
+
 
     private fun validateEmail(email: String) {
         val isValid = EmailValidator.validate(email)
@@ -69,5 +109,16 @@ class RegisterViewModel(private val createUserWithEmailUseCase: CreateUserWithEm
                 }
             )
         }
+    }
+
+    private suspend fun submitRegistration(email: String, password: String) {
+        setState { copy(isLoading = true) }
+        val result = createUserWithEmailUseCase(email, password)
+        result.onSuccess {
+            sendEffect(RegisterUiEffect.NavigateToHome)
+        }.onFailure { throwable ->
+            sendEffect(RegisterUiEffect.ShowError(throwable.message ?: "Unknown error"))
+        }
+        setState { copy(isLoading = false) }
     }
 }

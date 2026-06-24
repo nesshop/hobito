@@ -14,11 +14,19 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
@@ -27,14 +35,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nesshop.hobito.Res
@@ -87,9 +97,6 @@ fun RegisterScreen(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var repeatPassword by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(Unit) {
@@ -104,7 +111,7 @@ fun RegisterScreen(
     Box(modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars)) {
         FancyBackground(modifier = Modifier.matchParentSize())
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -152,52 +159,84 @@ fun RegisterScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     HobitoTextField(
-                        value = email,
-                        onValueChange = { email = it },
+                        value = uiState.email,
+                        onValueChange = { viewModel.onIntent(RegisterIntent.OnEmailChanged(it)) },
                         modifier = Modifier.fillMaxWidth().onFocusChanged{
-                            if (!it.isFocused) {
-                                viewModel.onIntent(RegisterIntent.ValidateEmail(email))
+                            if (!it.isFocused && uiState.email.isNotBlank()) {
+                                viewModel.onIntent(RegisterIntent.ValidateEmail(uiState.email))
                             }
                         },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.login_screen_email_label),
                         enabled = !uiState.isLoading,
                         isError = uiState.emailError != null,
-                        supportingText = uiState.emailError?.let { stringResource(it) }
+                        supportingText = uiState.emailError?.let { stringResource(it) },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Email,
+                            imeAction = ImeAction.Next
+                        )
                     )
                     HobitoTextField(
-                        value = password,
-                        onValueChange = { password = it },
+                        value = uiState.password,
+                        onValueChange = { viewModel.onIntent(RegisterIntent.OnPasswordChanged(it)) },
                         modifier = Modifier.fillMaxWidth().onFocusChanged{
-                            if (!it.isFocused) {
-                                viewModel.onIntent(RegisterIntent.ValidatePassword(password))
+                            if (!it.isFocused && uiState.password.isNotBlank()) {
+                                viewModel.onIntent((RegisterIntent.ValidatePassword(uiState.password)))
                             }
                         },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_password_label),
                         enabled = !uiState.isLoading,
                         isError = uiState.passwordError != null,
-                        supportingText = uiState.passwordError?.let { stringResource(it) }
+                        supportingText = uiState.passwordError?.let { stringResource(it) },
+                        visualTransformation = if (uiState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Next
+                        ),
+                        trailingIcon = {
+                            val image = if (uiState.isPasswordVisible)
+                                Icons.Filled.Visibility
+                            else Icons.Filled.VisibilityOff
+
+                            IconButton(onClick = {viewModel.onIntent(RegisterIntent.TogglePasswordVisibility)}) {
+                                Icon(imageVector = image, contentDescription = null)
+                            }
+                        }
                     )
                     HobitoTextField(
-                        value = repeatPassword,
-                        onValueChange = { repeatPassword = it },
+                        value = uiState.repeatPassword,
+                        onValueChange = { viewModel.onIntent(RegisterIntent.OnRepeatPasswordChanged(uiState.password, it)) },
                         modifier = Modifier.fillMaxWidth().onFocusChanged{
-                            if (!it.isFocused) {
-                                viewModel.onIntent(RegisterIntent.ValidateRepeatPassword(password, repeatPassword))
+                            if (!it.isFocused && uiState.repeatPassword.isNotBlank()) {
+                                viewModel.onIntent(RegisterIntent.ValidateRepeatPassword(uiState.password, uiState.repeatPassword))
                             }
                         },
                         shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_repeat_password_label),
                         enabled = !uiState.isLoading,
                         isError = uiState.repeatPasswordError != null,
-                        supportingText = uiState.repeatPasswordError?.let { stringResource(it) }
+                        supportingText = uiState.repeatPasswordError?.let { stringResource(it) },
+                        visualTransformation = if (uiState.isRepeatPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Password,
+                            imeAction = ImeAction.Done
+                        ),
+                        trailingIcon = {
+                            val image = if (uiState.isRepeatPasswordVisible)
+                                Icons.Filled.Visibility
+                            else Icons.Filled.VisibilityOff
+
+                            IconButton(onClick = {viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility)}) {
+                                Icon(imageVector = image, contentDescription = null)
+                            }
+                        }
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),
-                        onClick = { viewModel.onIntent(RegisterIntent.SubmitRegister(email, password)) },
+                        onClick = { viewModel.onIntent(RegisterIntent.SubmitRegister(uiState.email, uiState.password)) },
                         modifier = Modifier.fillMaxWidth(),
-                        enabled = email.isNotBlank() && password.isNotBlank() && password == repeatPassword && !uiState.isLoading
+                        enabled = uiState.isFormValid && !uiState.isLoading
                     )
 
                     Row(
