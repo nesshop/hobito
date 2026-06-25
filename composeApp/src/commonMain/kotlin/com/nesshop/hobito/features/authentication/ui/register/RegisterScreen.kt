@@ -62,6 +62,7 @@ import com.nesshop.hobito.designsystem.components.atoms.HobitoTextField
 import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 import com.nesshop.hobito.designsystem.components.molecules.HobitoClickableText
 import com.nesshop.hobito.designsystem.components.molecules.HobitoColoredTitle
+import com.nesshop.hobito.designsystem.components.molecules.HobitoPasswordTextField
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.dodger_blue
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
@@ -181,35 +182,27 @@ fun RegisterScreen(
                             imeAction = ImeAction.Next
                         )
                     )
-                    HobitoTextField(
+                    HobitoPasswordTextField(
                         value = uiState.password,
                         onValueChange = { viewModel.onIntent(RegisterIntent.OnPasswordChanged(it)) },
+                        isVisible = uiState.isPasswordVisible,
+                        onVisibilityToggle = {viewModel.onIntent(RegisterIntent.TogglePasswordVisibility)},
                         modifier = Modifier.fillMaxWidth().onFocusChanged {
                             if (!it.isFocused && uiState.password.isNotBlank()) {
-                                viewModel.onIntent((RegisterIntent.ValidatePassword(uiState.password)))
+                                viewModel.onIntent(RegisterIntent.ValidatePassword(uiState.password))
                             }
                         },
-                        shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_password_label),
                         enabled = !uiState.isLoading,
                         isError = uiState.passwordError != null,
                         supportingText = uiState.passwordError?.let { stringResource(it) },
-                        visualTransformation = if (uiState.isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Next
                         ),
-                        trailingIcon = {
-                            val image = if (uiState.isPasswordVisible)
-                                Icons.Filled.Visibility
-                            else Icons.Filled.VisibilityOff
-
-                            IconButton(onClick = { viewModel.onIntent(RegisterIntent.TogglePasswordVisibility) }) {
-                                Icon(imageVector = image, contentDescription = null)
-                            }
-                        }
+                        shape = RoundedCornerShape(16.dp),
                     )
-                    HobitoTextField(
+                    HobitoPasswordTextField(
                         value = uiState.repeatPassword,
                         onValueChange = {
                             viewModel.onIntent(
@@ -219,6 +212,8 @@ fun RegisterScreen(
                                 )
                             )
                         },
+                        isVisible = uiState.isRepeatPasswordVisible,
+                        onVisibilityToggle = {viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility)},
                         modifier = Modifier.fillMaxWidth().onFocusChanged {
                             if (!it.isFocused && uiState.repeatPassword.isNotBlank()) {
                                 viewModel.onIntent(
@@ -229,25 +224,15 @@ fun RegisterScreen(
                                 )
                             }
                         },
-                        shape = RoundedCornerShape(16.dp),
                         label = stringResource(Res.string.register_screen_repeat_password_label),
                         enabled = !uiState.isLoading,
                         isError = uiState.repeatPasswordError != null,
                         supportingText = uiState.repeatPasswordError?.let { stringResource(it) },
-                        visualTransformation = if (uiState.isRepeatPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
-                        trailingIcon = {
-                            val image = if (uiState.isRepeatPasswordVisible)
-                                Icons.Filled.Visibility
-                            else Icons.Filled.VisibilityOff
-
-                            IconButton(onClick = { viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility) }) {
-                                Icon(imageVector = image, contentDescription = null)
-                            }
-                        }
+                        shape = RoundedCornerShape(16.dp),
                     )
                     HobitoButton(
                         text = stringResource(Res.string.register_screen_register_button),
