@@ -1,16 +1,16 @@
-package com.nesshop.hobito.core.navigation
+package com.nesshop.hobito.navigation
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.nesshop.hobito.core.navigation.Route.Home
-import com.nesshop.hobito.core.navigation.Route.Login
-import com.nesshop.hobito.core.navigation.Route.Register
+import com.nesshop.hobito.navigation.Route.Home
+import com.nesshop.hobito.navigation.Route.Login
+import com.nesshop.hobito.navigation.Route.Register
 import com.nesshop.hobito.features.authentication.ui.login.LoginScreen
 import com.nesshop.hobito.features.authentication.ui.register.RegisterScreen
-import com.nesshop.hobito.features.main.contract.RootState
+import com.nesshop.hobito.root.contract.RootState
 
 @Composable
 fun NavigationWrapper(navController: NavHostController, rootState: RootState) {

@@ -1,4 +1,4 @@
-package com.nesshop.hobito.features.main.contract
+package com.nesshop.hobito.root.contract
 
 sealed interface RootState {
     data object Loading : RootState

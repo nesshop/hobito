@@ -2,7 +2,7 @@ package com.nesshop.hobito.core.di
 
 import com.nesshop.hobito.features.authentication.ui.login.LoginViewModel
 import com.nesshop.hobito.features.authentication.ui.register.RegisterViewModel
-import com.nesshop.hobito.features.main.RootViewModel
+import com.nesshop.hobito.root.RootViewModel
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 

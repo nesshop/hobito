@@ -7,10 +7,10 @@ import androidx.navigation.compose.rememberNavController
 import com.nesshop.hobito.core.di.authModule
 import com.nesshop.hobito.core.di.platformModule
 import com.nesshop.hobito.core.di.viewModelModule
-import com.nesshop.hobito.core.navigation.NavigationWrapper
+import com.nesshop.hobito.navigation.NavigationWrapper
 import com.nesshop.hobito.designsystem.theme.HobitoTheme
-import com.nesshop.hobito.features.main.RootViewModel
-import com.nesshop.hobito.features.main.contract.RootState
+import com.nesshop.hobito.root.RootViewModel
+import com.nesshop.hobito.root.contract.RootState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel

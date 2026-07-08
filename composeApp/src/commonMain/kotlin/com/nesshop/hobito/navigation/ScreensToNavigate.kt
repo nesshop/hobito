@@ -1,4 +1,4 @@
-package com.nesshop.hobito.core.navigation
+package com.nesshop.hobito.navigation
 
 import kotlinx.serialization.Serializable
 

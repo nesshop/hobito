@@ -1,11 +1,11 @@
-package com.nesshop.hobito.features.main
+package com.nesshop.hobito.root
 
 import androidx.lifecycle.viewModelScope
 import com.nesshop.hobito.core.ui.viewmodel.BaseViewModel
 import com.nesshop.hobito.domain.usecase.auth.ObserveAuthStateUseCase
-import com.nesshop.hobito.features.main.contract.RootIntent
-import com.nesshop.hobito.features.main.contract.RootState
-import com.nesshop.hobito.features.main.contract.RootUiEffect
+import com.nesshop.hobito.root.contract.RootIntent
+import com.nesshop.hobito.root.contract.RootState
+import com.nesshop.hobito.root.contract.RootUiEffect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
