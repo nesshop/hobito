@@ -3,7 +3,6 @@
 
     <!--Login Screen-->
     <string name="login_screen_title">Log in to start saving your hobbies!</string>
-
     <string name="login_screen_email_label">Email</string>
     <string name="login_screen_password_label">Password</string>
     <string name="login_screen_login_button">Log in</string>
@@ -12,7 +11,6 @@
     <string name="login_screen_apple_sign">Sign in with Apple</string>
     <string name="login_screen_have_an_account_text">Don't have an account? Sign up</string>
     <string name="login_screen_sign_up_text">Sign up</string>
-
 
     <!--Register Screen-->
     <string name="register_screen_title">Sign up to start saving your hobbies!</string>
@@ -24,6 +22,10 @@
     <string name="register_screen_email_error">Invalid email</string>
     <string name="register_screen_password_error">Password must have at least 8 characters, one uppercase letter, one number and one special character</string>
     <string name="register_screen_repeat_password_error">Passwords do not match</string>
+
+    <!--Home Screen-->
+    <string name="home_screen_title">Hola,</string>
+    <string name="home_screen_subtitle">¡Mantén viva la racha!✨</string>
 
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Circular logo</string>
