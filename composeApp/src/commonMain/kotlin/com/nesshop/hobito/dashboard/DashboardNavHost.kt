@@ -1,5 +1,6 @@
 package com.nesshop.hobito.dashboard
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -21,17 +22,17 @@ fun DashboardNavHost(
         composable<DashboardRoute.Home> {
             HomeScreen(navigateToAllActivities = {navController.navigate(DashboardRoute.AllActivities)},
                 navigateToActivityDetails = {
-                    // TODO: Implementar la navegación con el item 
+                    // TODO: Implementar la navegación con el item
                 })
         }
         composable<DashboardRoute.Search> {
-            // TODO: Implementar la pantalla de búsqueda
+            Text("Pantalla de búsqueda")
         }
         composable<DashboardRoute.Statistics> {
-            // TODO: Implementar la pantalla de estadísticas
+            Text("Pantalla de estadísticas")
         }
         composable<DashboardRoute.Profile> {
-            // TODO: Implementar la pantalla de perfil
+            Text("Pantalla de perfil")
         }
     }
 }

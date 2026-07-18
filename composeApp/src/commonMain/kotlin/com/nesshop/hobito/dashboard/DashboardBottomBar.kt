@@ -68,7 +68,7 @@ fun DashboardBottomBar(
             shadowElevation = 8.dp
         ) {
             Row(modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp)
+                .padding(horizontal = 8.dp)
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically) {
