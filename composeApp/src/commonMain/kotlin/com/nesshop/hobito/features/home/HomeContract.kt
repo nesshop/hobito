@@ -4,7 +4,6 @@ import com.nesshop.hobito.domain.model.HomeItem
 
 data class HomeState(
     val userName: String = "Ernesto",
-    val message: String = "Continua así!",
     val lastCompleted: HomeItem? = HomeItem(
         title = "title",
         subtitle = "subtitle",
@@ -52,7 +51,7 @@ data class HomeState(
 sealed interface HomeIntent {
     data object LoadHomeData : HomeIntent
     data object OnViewAllClicked : HomeIntent
-    data object OnActivityClicked : HomeIntent
+    data class OnActivityClicked(val item: HomeItem) : HomeIntent
 }
 
 sealed interface HomeUiEffect {

@@ -24,8 +24,11 @@
     <string name="register_screen_repeat_password_error">Passwords do not match</string>
 
     <!--Home Screen-->
-    <string name="home_screen_title">Hola,</string>
-    <string name="home_screen_subtitle">¡Mantén viva la racha!✨</string>
+    <string name="home_screen_title">Hello,</string>
+    <string name="home_screen_subtitle">Keep the streak alive!✨</string>
+    <string name="home_screen_last_completed">Last Completed</string>
+    <string name="home_screen_view_all">View All</string>
+    <string name="home_screen_recent_activity">Recent Activity</string>
 
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Circular logo</string>

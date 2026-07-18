@@ -4,6 +4,17 @@ import com.nesshop.hobito.core.ui.viewmodel.BaseViewModel
 
 class HomeViewModel: BaseViewModel<HomeState, HomeIntent, HomeUiEffect>(initialState = HomeState()) {
     override suspend fun handleIntent(intent: HomeIntent) {
-        TODO("Not yet implemented")
+        when(intent) {
+            HomeIntent.LoadHomeData -> {
+                // TODO: Llamada a FireStore y/o SQLDelight para obtener los datos
+            }
+
+            HomeIntent.OnViewAllClicked -> {
+                sendEffect(HomeUiEffect.NavigateToAllActivities)
+            }
+            is HomeIntent.OnActivityClicked -> {
+                sendEffect(HomeUiEffect.NavigateToActivityDetails(intent.item))
+            }
+        }
     }
 }

@@ -19,7 +19,10 @@ fun DashboardNavHost(
         modifier = modifier
     ) {
         composable<DashboardRoute.Home> {
-            HomeScreen()
+            HomeScreen(navigateToAllActivities = {navController.navigate(DashboardRoute.AllActivities)},
+                navigateToActivityDetails = {
+                    // TODO: Implementar la navegación con el item 
+                })
         }
     }
 }

@@ -30,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -49,7 +50,11 @@ import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
 import com.nesshop.hobito.domain.model.HomeItem
+import com.nesshop.hobito.home_screen_last_completed
+import com.nesshop.hobito.home_screen_recent_activity
+import com.nesshop.hobito.home_screen_subtitle
 import com.nesshop.hobito.home_screen_title
+import com.nesshop.hobito.home_screen_view_all
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -58,12 +63,35 @@ import org.koin.compose.koinInject
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(viewModel = HomeViewModel())
+    HomeScreen(
+        viewModel = HomeViewModel(),
+        navigateToAllActivities = {},
+        navigateToActivityDetails = {})
 }
+
 @Composable
-fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
+fun HomeScreen(
+    navigateToAllActivities: () -> Unit,
+    navigateToActivityDetails: (HomeItem) -> Unit,
+    viewModel: HomeViewModel = koinInject()
+) {
 
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                HomeUiEffect.NavigateToAllActivities -> {
+                    navigateToAllActivities()
+                }
+
+                is HomeUiEffect.NavigateToActivityDetails -> {
+                    navigateToActivityDetails(effect.item)
+                }
+
+            }
+        }
+    }
 
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -75,13 +103,19 @@ fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
             contentPadding = PaddingValues(top = 24.dp, bottom = 24.dp)
         ) {
             item {
-                HomeHeader(uiState.userName, uiState.message)
+                HomeHeader(uiState.userName, stringResource(Res.string.home_screen_subtitle))
             }
             item {
-                LastCompletedSection(item = uiState.lastCompleted)
+                LastCompletedSection(
+                    item = uiState.lastCompleted,
+                    onViewAllClick = { viewModel.onIntent(HomeIntent.OnViewAllClicked) })
             }
             item {
-                RecentActivitySection(activities = uiState.recentActivities, onActivityClick = {})
+                RecentActivitySection(activities = uiState.recentActivities, onActivityClick = {
+                    viewModel.onIntent(
+                        HomeIntent.OnActivityClicked(it)
+                    )
+                })
             }
         }
     }
@@ -145,7 +179,7 @@ private fun HomeHeader(username: String, message: String) {
 }
 
 @Composable
-private fun LastCompletedSection(item: HomeItem?) {
+private fun LastCompletedSection(item: HomeItem?, onViewAllClick: () -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -153,12 +187,12 @@ private fun LastCompletedSection(item: HomeItem?) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             HobitoText(
-                "Last Completed",
+                text = stringResource(Res.string.home_screen_last_completed),
                 style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
             )
             HobitoText(
-                "View all",
-                modifier = Modifier.clickable {},
+                text = stringResource(Res.string.home_screen_view_all),
+                modifier = Modifier.clickable { onViewAllClick() },
                 color = bitterSweet,
                 style = MaterialTheme.typography.bodyMedium
             )
@@ -177,7 +211,7 @@ private fun LastCompletedSection(item: HomeItem?) {
                 ) {
                     Box(
                         modifier = Modifier
-                            .size(100.dp,130.dp)
+                            .size(100.dp, 130.dp)
                             .clip(RoundedCornerShape(20.dp))
                             .background(Color.DarkGray)
                     ) {
@@ -214,14 +248,20 @@ private fun LastCompletedSection(item: HomeItem?) {
                         }
                         HobitoText(
                             text = it.title,
-                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 20.sp
+                            )
                         )
                         HobitoText(
                             text = it.subtitle,
                             style = MaterialTheme.typography.bodyMedium,
                             color = Color.Gray
                         )
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.padding(top = 8.dp)
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.CalendarToday,
                                 contentDescription = null,
@@ -246,7 +286,7 @@ private fun LastCompletedSection(item: HomeItem?) {
 private fun RecentActivitySection(activities: List<HomeItem>, onActivityClick: (HomeItem) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         HobitoText(
-            "Recent Activity",
+            text = stringResource(Res.string.home_screen_recent_activity),
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
 

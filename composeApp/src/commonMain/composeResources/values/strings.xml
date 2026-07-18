@@ -24,6 +24,13 @@
     <string name="register_screen_password_error">La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial</string>
     <string name="register_screen_repeat_password_error">Las contraseñas no coinciden</string>
 
+    <!--Home Screen-->
+    <string name="home_screen_title">Hola,</string>
+    <string name="home_screen_subtitle">¡Mantén viva la racha!✨</string>
+    <string name="home_screen_last_completed">Último completado</string>
+    <string name="home_screen_view_all">Ver todos</string>
+    <string name="home_screen_recent_activity">Actividad reciente</string>
+
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Logo circular</string>
     <string name="login_screen_chat_logo_content_description">Logo chat</string>

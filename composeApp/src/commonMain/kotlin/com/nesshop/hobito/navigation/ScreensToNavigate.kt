@@ -15,4 +15,8 @@ sealed class AuthRoute {
 sealed class DashboardRoute {
     @Serializable
     data object Home : DashboardRoute()
+
+    @Serializable
+    data object AllActivities : DashboardRoute()
+
 }
