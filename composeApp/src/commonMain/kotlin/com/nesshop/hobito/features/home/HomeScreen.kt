@@ -26,11 +26,9 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Tv
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardDefaults.shape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,7 +36,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,8 +52,14 @@ import com.nesshop.hobito.domain.model.HomeItem
 import com.nesshop.hobito.home_screen_title
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.koinInject
 
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen(viewModel = HomeViewModel())
+}
 @Composable
 fun HomeScreen(viewModel: HomeViewModel = koinInject()) {
 
@@ -143,7 +146,7 @@ private fun HomeHeader(username: String, message: String) {
 
 @Composable
 private fun LastCompletedSection(item: HomeItem?) {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -193,44 +196,44 @@ private fun LastCompletedSection(item: HomeItem?) {
                                 tint = Color.White,
                                 modifier = Modifier.size(16.dp)
                             )
+                        }
+                    }
 
-                            Spacer(modifier = Modifier.width(20.dp))
-                            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                                Surface(
-                                    shape = RoundedCornerShape(8.dp),
-                                    color = yellow_orange.copy(0.1f),
-                                    contentColor = yellow_orange
-                                ) {
-                                    HobitoText(
-                                        text = it.category,
-                                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                                        style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                                    )
-                                }
-                                HobitoText(
-                                    text = it.title,
-                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
-                                )
-                                HobitoText(
-                                    text = it.subtitle,
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = Color.Gray
-                                )
-                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
-                                    Icon(
-                                        imageVector = Icons.Default.CalendarToday,
-                                        contentDescription = null,
-                                        modifier = Modifier.size(16.dp),
-                                        tint = Color.Gray.copy(0.6f)
-                                    )
-                                    Spacer(modifier = Modifier.width(6.dp))
-                                    HobitoText(
-                                        text = it.date,
-                                        style = MaterialTheme.typography.bodySmall,
-                                        color = Color.Gray.copy(0.6f)
-                                    )
-                                }
-                            }
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = yellow_orange.copy(0.1f),
+                            contentColor = yellow_orange
+                        ) {
+                            HobitoText(
+                                text = it.category,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                            )
+                        }
+                        HobitoText(
+                            text = it.title,
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold, fontSize = 20.sp)
+                        )
+                        HobitoText(
+                            text = it.subtitle,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray
+                        )
+                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
+                            Icon(
+                                imageVector = Icons.Default.CalendarToday,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = Color.Gray.copy(0.6f)
+                            )
+                            Spacer(modifier = Modifier.width(6.dp))
+                            HobitoText(
+                                text = it.date,
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.Gray.copy(0.6f)
+                            )
                         }
                     }
                 }
@@ -241,7 +244,7 @@ private fun LastCompletedSection(item: HomeItem?) {
 
 @Composable
 private fun RecentActivitySection(activities: List<HomeItem>, onActivityClick: (HomeItem) -> Unit) {
-    Column {
+    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
         HobitoText(
             "Recent Activity",
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
@@ -270,7 +273,7 @@ private fun RecentActivityItem(item: HomeItem, onActivityClick: (HomeItem) -> Un
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onActivityClick },
+            .clickable { onActivityClick(item) },
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White.copy(0.6f))
     ) {
