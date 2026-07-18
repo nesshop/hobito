@@ -24,5 +24,14 @@ fun DashboardNavHost(
                     // TODO: Implementar la navegación con el item 
                 })
         }
+        composable<DashboardRoute.Search> {
+            // TODO: Implementar la pantalla de búsqueda
+        }
+        composable<DashboardRoute.Statistics> {
+            // TODO: Implementar la pantalla de estadísticas
+        }
+        composable<DashboardRoute.Profile> {
+            // TODO: Implementar la pantalla de perfil
+        }
     }
 }

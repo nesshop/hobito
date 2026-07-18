@@ -12,7 +12,10 @@ import androidx.navigation.compose.rememberNavController
 import com.nesshop.hobito.navigation.DashboardRoute
 
 private val mainRoutes = setOf(
-    DashboardRoute.Home::class
+    DashboardRoute.Home::class,
+    DashboardRoute.Search::class,
+    DashboardRoute.Statistics::class,
+    DashboardRoute.Profile::class
 )
 
 @Composable

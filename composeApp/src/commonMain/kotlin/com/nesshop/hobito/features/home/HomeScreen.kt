@@ -100,7 +100,7 @@ fun HomeScreen(
             modifier = Modifier.fillMaxSize()
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
-            contentPadding = PaddingValues(top = 24.dp, bottom = 24.dp)
+            contentPadding = PaddingValues(bottom = 24.dp)
         ) {
             item {
                 HomeHeader(uiState.userName, stringResource(Res.string.home_screen_subtitle))
@@ -124,7 +124,7 @@ fun HomeScreen(
 @Composable
 private fun HomeHeader(username: String, message: String) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(16.dp),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
