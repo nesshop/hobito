@@ -44,6 +44,7 @@ import com.nesshop.hobito.Res
 import com.nesshop.hobito.book_icon
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
 import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
+import com.nesshop.hobito.designsystem.layouts.HobitoScreen
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
@@ -73,7 +74,8 @@ fun HomeScreenPreview() {
 fun HomeScreen(
     navigateToAllActivities: () -> Unit,
     navigateToActivityDetails: (HomeItem) -> Unit,
-    viewModel: HomeViewModel = koinInject()
+    viewModel: HomeViewModel = koinInject(),
+    contentPadding: PaddingValues = PaddingValues()
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -93,14 +95,15 @@ fun HomeScreen(
         }
     }
 
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        FancyBackground(modifier = Modifier.matchParentSize())
+    HobitoScreen(contentPadding = contentPadding) {safePadding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize()
                 .padding(horizontal = 24.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp),
-            contentPadding = PaddingValues(bottom = 24.dp)
+            contentPadding = PaddingValues(
+                top = safePadding.calculateTopPadding() + 24.dp,
+                bottom = safePadding.calculateBottomPadding() + 24.dp
+            )
         ) {
             item {
                 HomeHeader(uiState.userName, stringResource(Res.string.home_screen_subtitle))

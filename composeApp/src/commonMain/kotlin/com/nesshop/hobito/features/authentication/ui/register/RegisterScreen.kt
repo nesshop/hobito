@@ -63,6 +63,7 @@ import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 import com.nesshop.hobito.designsystem.components.molecules.HobitoClickableText
 import com.nesshop.hobito.designsystem.components.molecules.HobitoColoredTitle
 import com.nesshop.hobito.designsystem.components.molecules.HobitoPasswordTextField
+import com.nesshop.hobito.designsystem.layouts.HobitoScreen
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.dodger_blue
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
@@ -110,211 +111,211 @@ fun RegisterScreen(
             }
         }
     }
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        FancyBackground(modifier = Modifier.matchParentSize())
-        Column(
-            modifier = Modifier.fillMaxSize()
-                .systemBarsPadding()
-                .imePadding()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+    HobitoScreen(showStatusBarProtector = false) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier.fillMaxSize()
+                    .systemBarsPadding()
+                    .imePadding()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.add_icon),
-                    contentDescription = stringResource(Res.string.login_screen_circular_logo_content_description)
-                )
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.chat_icon),
-                    contentDescription = stringResource(Res.string.login_screen_chat_logo_content_description),
-                )
-                HobitoCircularIcon(
-                    painter = painterResource(Res.drawable.book_icon),
-                    contentDescription = stringResource(Res.string.login_screen_book_logo_content_description)
-                )
-            }
-            HobitoColoredTitle(
-                listOf(
-                    "H" to bitterSweet,
-                    "o" to golden_tainoi,
-                    "b" to malibu,
-                    "i" to java,
-                    "t" to yellow_orange,
-                    "o" to dodger_blue
-                ), texStyle = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
-                fontFamily = FontFamily(Font(Res.font.baloo2_bold))
-            )
-            HobitoText(
-                stringResource(Res.string.register_screen_title),
-            )
-            Card(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.White.copy(alpha = 0.6f)
-                )
-            ) {
-
-                Column(
-                    modifier = Modifier.padding(24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    HobitoTextField(
-                        value = uiState.email,
-                        onValueChange = { viewModel.onIntent(RegisterIntent.OnEmailChanged(it)) },
-                        modifier = Modifier.fillMaxWidth().onFocusChanged {
-                            if (!it.isFocused && uiState.email.isNotBlank()) {
-                                viewModel.onIntent(RegisterIntent.ValidateEmail(uiState.email))
-                            }
-                        },
-                        shape = RoundedCornerShape(16.dp),
-                        label = stringResource(Res.string.login_screen_email_label),
-                        enabled = !uiState.isLoading,
-                        isError = uiState.emailError != null,
-                        supportingText = uiState.emailError?.let { stringResource(it) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Email,
-                            imeAction = ImeAction.Next
-                        )
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.add_icon),
+                        contentDescription = stringResource(Res.string.login_screen_circular_logo_content_description)
                     )
-                    HobitoPasswordTextField(
-                        value = uiState.password,
-                        onValueChange = { viewModel.onIntent(RegisterIntent.OnPasswordChanged(it)) },
-                        isVisible = uiState.isPasswordVisible,
-                        onVisibilityToggle = {viewModel.onIntent(RegisterIntent.TogglePasswordVisibility)},
-                        modifier = Modifier.fillMaxWidth().onFocusChanged {
-                            if (!it.isFocused && uiState.password.isNotBlank()) {
-                                viewModel.onIntent(RegisterIntent.ValidatePassword(uiState.password))
-                            }
-                        },
-                        label = stringResource(Res.string.register_screen_password_label),
-                        enabled = !uiState.isLoading,
-                        isError = uiState.passwordError != null,
-                        supportingText = uiState.passwordError?.let { stringResource(it) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Next
-                        ),
-                        shape = RoundedCornerShape(16.dp),
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.chat_icon),
+                        contentDescription = stringResource(Res.string.login_screen_chat_logo_content_description),
                     )
-                    HobitoPasswordTextField(
-                        value = uiState.repeatPassword,
-                        onValueChange = {
-                            viewModel.onIntent(
-                                RegisterIntent.OnRepeatPasswordChanged(
-                                    uiState.password,
-                                    it
-                                )
-                            )
-                        },
-                        isVisible = uiState.isRepeatPasswordVisible,
-                        onVisibilityToggle = {viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility)},
-                        modifier = Modifier.fillMaxWidth().onFocusChanged {
-                            if (!it.isFocused && uiState.repeatPassword.isNotBlank()) {
-                                viewModel.onIntent(
-                                    RegisterIntent.ValidateRepeatPassword(
-                                        uiState.password,
-                                        uiState.repeatPassword
-                                    )
-                                )
-                            }
-                        },
-                        label = stringResource(Res.string.register_screen_repeat_password_label),
-                        enabled = !uiState.isLoading,
-                        isError = uiState.repeatPasswordError != null,
-                        supportingText = uiState.repeatPasswordError?.let { stringResource(it) },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Password,
-                            imeAction = ImeAction.Done
-                        ),
-                        shape = RoundedCornerShape(16.dp),
+                    HobitoCircularIcon(
+                        painter = painterResource(Res.drawable.book_icon),
+                        contentDescription = stringResource(Res.string.login_screen_book_logo_content_description)
                     )
-                    HobitoButton(
-                        text = stringResource(Res.string.register_screen_register_button),
-                        onClick = {
-                            viewModel.onIntent(
-                                RegisterIntent.SubmitRegister(
-                                    uiState.email,
-                                    uiState.password
-                                )
-                            )
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = uiState.isFormValid && !uiState.isLoading
+                }
+                HobitoColoredTitle(
+                    listOf(
+                        "H" to bitterSweet,
+                        "o" to golden_tainoi,
+                        "b" to malibu,
+                        "i" to java,
+                        "t" to yellow_orange,
+                        "o" to dodger_blue
+                    ), texStyle = MaterialTheme.typography.displayLarge.copy(fontSize = 64.sp),
+                    fontFamily = FontFamily(Font(Res.font.baloo2_bold))
+                )
+                HobitoText(
+                    stringResource(Res.string.register_screen_title),
+                )
+                Card(
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.White.copy(alpha = 0.6f)
                     )
-
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        HorizontalDivider(modifier = Modifier.weight(1f))
-                        HobitoText(
-                            text = stringResource(Res.string.login_screen_divider_text),
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                        HorizontalDivider(modifier = Modifier.weight(1f))
-                    }
+                ) {
 
                     Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                        modifier = Modifier.padding(24.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        OutlinedButton(
-                            onClick = { /*TODO*/ },
+                        HobitoTextField(
+                            value = uiState.email,
+                            onValueChange = { viewModel.onIntent(RegisterIntent.OnEmailChanged(it)) },
+                            modifier = Modifier.fillMaxWidth().onFocusChanged {
+                                if (!it.isFocused && uiState.email.isNotBlank()) {
+                                    viewModel.onIntent(RegisterIntent.ValidateEmail(uiState.email))
+                                }
+                            },
+                            shape = RoundedCornerShape(16.dp),
+                            label = stringResource(Res.string.login_screen_email_label),
+                            enabled = !uiState.isLoading,
+                            isError = uiState.emailError != null,
+                            supportingText = uiState.emailError?.let { stringResource(it) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Email,
+                                imeAction = ImeAction.Next
+                            )
+                        )
+                        HobitoPasswordTextField(
+                            value = uiState.password,
+                            onValueChange = { viewModel.onIntent(RegisterIntent.OnPasswordChanged(it)) },
+                            isVisible = uiState.isPasswordVisible,
+                            onVisibilityToggle = { viewModel.onIntent(RegisterIntent.TogglePasswordVisibility) },
+                            modifier = Modifier.fillMaxWidth().onFocusChanged {
+                                if (!it.isFocused && uiState.password.isNotBlank()) {
+                                    viewModel.onIntent(RegisterIntent.ValidatePassword(uiState.password))
+                                }
+                            },
+                            label = stringResource(Res.string.register_screen_password_label),
+                            enabled = !uiState.isLoading,
+                            isError = uiState.passwordError != null,
+                            supportingText = uiState.passwordError?.let { stringResource(it) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Next
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                        )
+                        HobitoPasswordTextField(
+                            value = uiState.repeatPassword,
+                            onValueChange = {
+                                viewModel.onIntent(
+                                    RegisterIntent.OnRepeatPasswordChanged(
+                                        uiState.password,
+                                        it
+                                    )
+                                )
+                            },
+                            isVisible = uiState.isRepeatPasswordVisible,
+                            onVisibilityToggle = { viewModel.onIntent(RegisterIntent.ToggleRepeatPasswordVisibility) },
+                            modifier = Modifier.fillMaxWidth().onFocusChanged {
+                                if (!it.isFocused && uiState.repeatPassword.isNotBlank()) {
+                                    viewModel.onIntent(
+                                        RegisterIntent.ValidateRepeatPassword(
+                                            uiState.password,
+                                            uiState.repeatPassword
+                                        )
+                                    )
+                                }
+                            },
+                            label = stringResource(Res.string.register_screen_repeat_password_label),
+                            enabled = !uiState.isLoading,
+                            isError = uiState.repeatPasswordError != null,
+                            supportingText = uiState.repeatPasswordError?.let { stringResource(it) },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                        )
+                        HobitoButton(
+                            text = stringResource(Res.string.register_screen_register_button),
+                            onClick = {
+                                viewModel.onIntent(
+                                    RegisterIntent.SubmitRegister(
+                                        uiState.email,
+                                        uiState.password
+                                    )
+                                )
+                            },
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            enabled = !uiState.isLoading
+                            enabled = uiState.isFormValid && !uiState.isLoading
+                        )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Image(
-                                painter = painterResource(Res.drawable.google_logo),
-                                contentDescription = stringResource(Res.string.login_screen_google_logo_content_description),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
+                            HorizontalDivider(modifier = Modifier.weight(1f))
                             HobitoText(
-                                text = stringResource(Res.string.login_screen_google_sign)
+                                text = stringResource(Res.string.login_screen_divider_text),
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurface
                             )
+                            HorizontalDivider(modifier = Modifier.weight(1f))
                         }
-                        OutlinedButton(
-                            onClick = { /*TODO*/ },
+
+                        Column(
                             modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp),
-                            enabled = !uiState.isLoading
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            Image(
-                                painter = painterResource(Res.drawable.apple_logo),
-                                contentDescription = stringResource(Res.string.login_screen_apple_logo_content_description),
-                                modifier = Modifier.size(20.dp)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            HobitoText(
-                                text = stringResource(Res.string.login_screen_apple_sign)
-                            )
+                            OutlinedButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                enabled = !uiState.isLoading
+                            ) {
+                                Image(
+                                    painter = painterResource(Res.drawable.google_logo),
+                                    contentDescription = stringResource(Res.string.login_screen_google_logo_content_description),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                HobitoText(
+                                    text = stringResource(Res.string.login_screen_google_sign)
+                                )
+                            }
+                            OutlinedButton(
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier.fillMaxWidth(),
+                                shape = RoundedCornerShape(12.dp),
+                                enabled = !uiState.isLoading
+                            ) {
+                                Image(
+                                    painter = painterResource(Res.drawable.apple_logo),
+                                    contentDescription = stringResource(Res.string.login_screen_apple_logo_content_description),
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                HobitoText(
+                                    text = stringResource(Res.string.login_screen_apple_sign)
+                                )
+                            }
                         }
                     }
                 }
+                HobitoClickableText(
+                    fullText = stringResource(Res.string.register_screen_already_have_account),
+                    clickableText = stringResource(Res.string.register_screen_login_text),
+                    clickableColor = malibu,
+                    onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() })
             }
-            HobitoClickableText(
-                fullText = stringResource(Res.string.register_screen_already_have_account),
-                clickableText = stringResource(Res.string.register_screen_login_text),
-                clickableColor = malibu,
-                onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() })
-        }
 
-        if (uiState.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-        }
+            if (uiState.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            }
 
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter)
-        )
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.align(Alignment.BottomCenter)
+            )
+        }
     }
 }

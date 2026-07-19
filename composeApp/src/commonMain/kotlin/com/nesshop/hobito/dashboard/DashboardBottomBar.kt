@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -58,6 +60,7 @@ fun DashboardBottomBar(
 
     Box(
         modifier = Modifier.fillMaxWidth()
+            .navigationBarsPadding()
             .padding(start = 24.dp, end = 24.dp, bottom = 20.dp),
         contentAlignment = Alignment.Center
     ) {
