@@ -17,6 +17,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import com.nesshop.hobito.Poppins_Regular
 import com.nesshop.hobito.Res
@@ -37,7 +38,8 @@ fun HobitoClickableText(
     fontFamily: FontFamily = FontFamily(Font(Res.font.Poppins_Regular)),
     clickableStyle: SpanStyle = SpanStyle(
         fontWeight = FontWeight.Bold
-    )
+    ),
+    textAlign: TextAlign? = null
 ) {
     val annotatedString = buildAnnotatedString {
         val startIndex = fullText.indexOf(clickableText)
@@ -81,6 +83,7 @@ fun HobitoClickableText(
         color = color,
         style = style,
         fontFamily = fontFamily,
+        textAlign = textAlign,
         onTextLayout = { textLayoutResult = it }
     )
 }

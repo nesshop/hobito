@@ -6,29 +6,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHost
@@ -45,8 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nesshop.hobito.Res
@@ -59,7 +49,6 @@ import com.nesshop.hobito.designsystem.components.atoms.HobitoButton
 import com.nesshop.hobito.designsystem.components.atoms.HobitoCircularIcon
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
 import com.nesshop.hobito.designsystem.components.atoms.HobitoTextField
-import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 import com.nesshop.hobito.designsystem.components.molecules.HobitoClickableText
 import com.nesshop.hobito.designsystem.components.molecules.HobitoColoredTitle
 import com.nesshop.hobito.designsystem.components.molecules.HobitoPasswordTextField
@@ -111,13 +100,16 @@ fun RegisterScreen(
             }
         }
     }
-    HobitoScreen(showStatusBarProtector = false) {
+    HobitoScreen(showStatusBarProtector = true) { safePadding ->
         Box(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier.fillMaxSize()
-                    .systemBarsPadding()
                     .imePadding()
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        top = safePadding.calculateTopPadding() + 24.dp,
+                        bottom = safePadding.calculateBottomPadding() + 24.dp
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -150,7 +142,9 @@ fun RegisterScreen(
                     fontFamily = FontFamily(Font(Res.font.baloo2_bold))
                 )
                 HobitoText(
-                    stringResource(Res.string.register_screen_title),
+                    text = stringResource(Res.string.register_screen_title),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -305,7 +299,10 @@ fun RegisterScreen(
                     fullText = stringResource(Res.string.register_screen_already_have_account),
                     clickableText = stringResource(Res.string.register_screen_login_text),
                     clickableColor = malibu,
-                    onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() })
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    onClickableTextClick = { if (!uiState.isLoading) navigateToLogin() }
+                )
             }
 
             if (uiState.isLoading) {

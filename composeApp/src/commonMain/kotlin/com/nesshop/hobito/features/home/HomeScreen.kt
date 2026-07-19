@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.sp
 import com.nesshop.hobito.Res
 import com.nesshop.hobito.book_icon
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
-import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 import com.nesshop.hobito.designsystem.layouts.HobitoScreen
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.golden_tainoi

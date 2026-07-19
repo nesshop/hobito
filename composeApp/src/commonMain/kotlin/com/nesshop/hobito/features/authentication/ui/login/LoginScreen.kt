@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nesshop.hobito.Res
@@ -49,7 +49,6 @@ import com.nesshop.hobito.designsystem.components.atoms.HobitoButton
 import com.nesshop.hobito.designsystem.components.atoms.HobitoCircularIcon
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
 import com.nesshop.hobito.designsystem.components.atoms.HobitoTextField
-import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 import com.nesshop.hobito.designsystem.components.molecules.HobitoClickableText
 import com.nesshop.hobito.designsystem.components.molecules.HobitoColoredTitle
 import com.nesshop.hobito.designsystem.components.molecules.HobitoPasswordTextField
@@ -104,16 +103,21 @@ fun LoginScreen(
             }
         }
     }
-    HobitoScreen(showStatusBarProtector = false) {
+    HobitoScreen(showStatusBarProtector = true) { safePadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
             Column(
                 modifier = Modifier.fillMaxSize()
-                    .systemBarsPadding()
                     .imePadding()
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        top = safePadding.calculateTopPadding() + 24.dp,
+                        bottom = safePadding.calculateBottomPadding() + 24.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    ),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -146,7 +150,9 @@ fun LoginScreen(
                     fontFamily = FontFamily(Font(Res.font.baloo2_bold))
                 )
                 HobitoText(
-                    stringResource(Res.string.login_screen_title),
+                    text = stringResource(Res.string.login_screen_title),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
                 )
                 Card(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -268,7 +274,10 @@ fun LoginScreen(
                     fullText = stringResource(Res.string.login_screen_have_an_account_text),
                     clickableText = stringResource(Res.string.login_screen_sign_up_text),
                     clickableColor = malibu,
-                    onClickableTextClick = { if (!uiState.isLoading) navigateToRegister() })
+                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    textAlign = TextAlign.Center,
+                    onClickableTextClick = { if (!uiState.isLoading) navigateToRegister() }
+                )
             }
 
             if (uiState.isLoading) {
