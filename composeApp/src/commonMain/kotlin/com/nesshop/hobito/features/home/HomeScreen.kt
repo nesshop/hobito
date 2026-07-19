@@ -1,9 +1,11 @@
 package com.nesshop.hobito.features.home
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -36,7 +38,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,7 +54,6 @@ import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
-import com.nesshop.hobito.designsystem.theme.yellow_orange
 import com.nesshop.hobito.domain.model.HomeItem
 import com.nesshop.hobito.home_screen_last_completed
 import com.nesshop.hobito.home_screen_recent_activity
@@ -201,81 +206,86 @@ private fun LastCompletedSection(item: HomeItem?, onViewAllClick: () -> Unit) {
         }
 
         item?.let {
+            val categoryColor = getCategoryColor(it.category)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(28.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White),
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
-                Row(
-                    modifier = Modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .size(100.dp, 130.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(Color.DarkGray)
+                Box {
+                    CategoryBackground(it.category)
+
+                    Row(
+                        modifier = Modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
                         Box(
                             modifier = Modifier
-                                .align(Alignment.BottomEnd)
-                                .padding(8.dp)
-                                .size(32.dp)
-                                .clip(CircleShape)
-                                .background(golden_tainoi.copy(0.9f)),
-                            contentAlignment = Alignment.Center
+                                .size(100.dp, 130.dp)
+                                .clip(RoundedCornerShape(20.dp))
+                                .background(Color.DarkGray)
                         ) {
-                            Icon(
-                                painter = painterResource(Res.drawable.book_icon),
-                                contentDescription = null,
-                                tint = Color.White,
-                                modifier = Modifier.size(16.dp)
-                            )
+                            Box(
+                                modifier = Modifier
+                                    .align(Alignment.BottomEnd)
+                                    .padding(8.dp)
+                                    .size(32.dp)
+                                    .clip(CircleShape)
+                                    .background(categoryColor.copy(0.9f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    painter = getCategoryIcon(it.category),
+                                    contentDescription = null,
+                                    tint = Color.White,
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
                         }
-                    }
 
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                        Surface(
-                            shape = RoundedCornerShape(8.dp),
-                            color = yellow_orange.copy(0.1f),
-                            contentColor = yellow_orange
-                        ) {
+                        Spacer(modifier = Modifier.width(20.dp))
+                        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = categoryColor.copy(0.1f),
+                                contentColor = categoryColor
+                            ) {
+                                HobitoText(
+                                    text = it.category,
+                                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
+                                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                                )
+                            }
                             HobitoText(
-                                text = it.category,
-                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
-                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+                                text = it.title,
+                                style = MaterialTheme.typography.titleMedium.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 20.sp
+                                )
                             )
-                        }
-                        HobitoText(
-                            text = it.title,
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 20.sp
-                            )
-                        )
-                        HobitoText(
-                            text = it.subtitle,
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.Gray
-                        )
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(top = 8.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.CalendarToday,
-                                contentDescription = null,
-                                modifier = Modifier.size(16.dp),
-                                tint = Color.Gray.copy(0.6f)
-                            )
-                            Spacer(modifier = Modifier.width(6.dp))
                             HobitoText(
-                                text = it.date,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.Gray.copy(0.6f)
+                                text = it.subtitle,
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray
                             )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.padding(top = 8.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.CalendarToday,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(16.dp),
+                                    tint = Color.Gray.copy(0.6f)
+                                )
+                                Spacer(modifier = Modifier.width(6.dp))
+                                HobitoText(
+                                    text = it.date,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = Color.Gray.copy(0.6f)
+                                )
+                            }
                         }
                     }
                 }
@@ -300,18 +310,7 @@ private fun RecentActivitySection(activities: List<HomeItem>, onActivityClick: (
 
 @Composable
 private fun RecentActivityItem(item: HomeItem, onActivityClick: (HomeItem) -> Unit) {
-    val iconColor = when (item.category) {
-        "MOVIE" -> bitterSweet
-        "GAME" -> java
-        "SERIES" -> malibu
-        else -> golden_tainoi
-    }
-    val icon = when (item.category) {
-        "MOVIE" -> Icons.Default.Movie
-        "GAME" -> Icons.Default.Gamepad
-        "SERIES" -> Icons.Default.Tv
-        else -> Icons.Default.Book
-    }
+    val categoryColor = getCategoryColor(item.category)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -319,60 +318,100 @@ private fun RecentActivityItem(item: HomeItem, onActivityClick: (HomeItem) -> Un
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White.copy(0.6f))
     ) {
-        Row(
-            modifier = Modifier.padding(16.dp)
-                .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(52.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(iconColor.copy(0.1f)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = null,
-                    tint = iconColor,
-                    modifier = Modifier.size(24.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(16.dp))
+        Box {
+            CategoryBackground(item.category)
 
-            Column(modifier = Modifier.weight(1f)) {
-                HobitoText(
-                    text = item.title,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                HobitoText(
-                    text = item.subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
-                )
-            }
-            Column(horizontalAlignment = Alignment.End) {
-                item.rating?.let {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = null,
-                            tint = golden_tainoi,
-                            modifier = Modifier.size(16.dp)
-                        )
-                        Spacer(modifier = Modifier.width(4.dp))
-                        HobitoText(
-                            text = it.toString(),
-                            style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
-                        )
-                    }
+            Row(
+                modifier = Modifier.padding(16.dp)
+                    .fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(52.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(categoryColor.copy(0.1f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        painter = getCategoryIcon(item.category),
+                        contentDescription = null,
+                        tint = categoryColor,
+                        modifier = Modifier.size(24.dp)
+                    )
                 }
-                HobitoText(
-                    text = item.date,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.LightGray.copy(0.8f)
-                )
+                Spacer(modifier = Modifier.width(16.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    HobitoText(
+                        text = item.title,
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                    )
+                    HobitoText(
+                        text = item.subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray
+                    )
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    item.rating?.let {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = null,
+                                tint = golden_tainoi,
+                                modifier = Modifier.size(16.dp)
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                            HobitoText(
+                                text = it.toString(),
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold)
+                            )
+                        }
+                    }
+                    HobitoText(
+                        text = item.date,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.LightGray.copy(0.8f)
+                    )
+                }
             }
         }
+    }
+}
+
+private fun getCategoryColor(category: String): Color {
+    return when (category.uppercase()) {
+        "MOVIE" -> bitterSweet
+        "GAME" -> java
+        "SERIES" -> malibu
+        else -> golden_tainoi
+    }
+}
+
+@Composable
+private fun getCategoryIcon(category: String): Painter {
+    return when (category.uppercase()) {
+        "MOVIE" -> rememberVectorPainter(Icons.Default.Movie)
+        "GAME" -> rememberVectorPainter(Icons.Default.Gamepad)
+        "SERIES" -> rememberVectorPainter(Icons.Default.Tv)
+        "BOOK" -> painterResource(Res.drawable.book_icon)
+        else -> rememberVectorPainter(Icons.Default.Book)
+    }
+}
+
+@Composable
+private fun BoxScope.CategoryBackground(category: String) {
+    val categoryColor = getCategoryColor(category)
+    Canvas(modifier = Modifier.matchParentSize()) {
+        drawCircle(
+            brush = Brush.radialGradient(
+                colors = listOf(categoryColor.copy(alpha = 0.15f), Color.Transparent),
+                center = Offset(x = size.width, y = 0f),
+                radius = size.width * 0.6f
+            ),
+            radius = size.width * 0.6f,
+            center = Offset(x = size.width, y = 0f)
+        )
     }
 }
 
