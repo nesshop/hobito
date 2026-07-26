@@ -54,6 +54,8 @@ Seguimos principios de **Atomic Design**:
 - Usar `Res.string`, `Res.drawable`, etc., para todos los recursos (multiplatform).
 - Los Composables deben ser mayoritariamente sin estado (*stateless*).
 - El estado se observa mediante `uiState.collectAsState()`.
+- Priorizar usar más funciones composables para que la clase sea más legible, y evitar grandes bloques de código.
+- Al crear una nueva Screen añade también su preview.
 
 ## Inyección de Dependencias (Koin)
 
@@ -76,3 +78,4 @@ El proyecto utiliza **Koin** para la inyección de dependencias. Los módulos se
 3.  **DI con Koin**: Todo componente inyectable debe estar en `core/di`.
 4.  **Stateless UI**: El 90% de los composables deben recibir el estado y devolver lambdas de eventos.
 5.  **Single Responsibility**: Los UseCases solo hacen una cosa.
+6.  **Utilizar los componentes de atomic design**: Utilizar en medida de lo posible los componentes, para que se lo más reutilizable posible.
