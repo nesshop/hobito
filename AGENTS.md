@@ -68,3 +68,11 @@ El proyecto utiliza **Koin** para la inyección de dependencias. Los módulos se
 - **Lógica de Negocio**: Siempre debe ir en `domain/usecase`. Los ViewModels solo coordinan el estado y los efectos.
 - **Validaciones**: Utilizar los validadores definidos en `domain/validation`.
 - **Manejo de Errores**: Usar `UiEffect` para comunicar errores puntuales a la UI.
+
+## Reglas de Oro (Core Rules)
+
+1.  **MVI Estricto**: No saltarse la definición del Contract. Estado inmutable siempre.
+2.  **Zero Strings**: No usar hardcoded strings en Composables. Todo vía `Res.string`.
+3.  **DI con Koin**: Todo componente inyectable debe estar en `core/di`.
+4.  **Stateless UI**: El 90% de los composables deben recibir el estado y devolver lambdas de eventos.
+5.  **Single Responsibility**: Los UseCases solo hacen una cosa.
