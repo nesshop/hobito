@@ -12,7 +12,20 @@
           "package_name": "com.nesshop.hobito"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "549836708620-cfr7vk4l1jqhimifohd6jvhbob1lisj3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nesshop.hobito",
+            "certificate_hash": "73542b678c5eb9df7d0c6f316c674ae757d4ac32"
+          }
+        },
+        {
+          "client_id": "549836708620-7j7m12hvdeac2h068qo9khk995coclkh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCyNus8fDe8bPzb7LSvHjJH_0vjFeaKX7E"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549836708620-6mvmd4q9rl4rjfv8f61ic40djfkppb4n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "549836708620-9im75h53u5e1ekt9ri4hge5q6mu71diu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nesshop.hobito"
+              }
+            }
+          ]
         }
       }
     }
