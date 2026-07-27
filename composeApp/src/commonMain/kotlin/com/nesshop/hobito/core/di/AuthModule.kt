@@ -5,6 +5,7 @@ import com.nesshop.hobito.domain.repository.AuthRepository
 import com.nesshop.hobito.domain.usecase.auth.CreateUserWithEmailUseCase
 import com.nesshop.hobito.domain.usecase.auth.ObserveAuthStateUseCase
 import com.nesshop.hobito.domain.usecase.auth.SignInWithEmailUseCase
+import com.nesshop.hobito.domain.usecase.auth.SignInWithGoogleUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -14,4 +15,5 @@ val authModule = module {
     factory { ObserveAuthStateUseCase(get()) }
     factoryOf(::SignInWithEmailUseCase)
     factoryOf(::CreateUserWithEmailUseCase)
+    factoryOf(::SignInWithGoogleUseCase)
 }

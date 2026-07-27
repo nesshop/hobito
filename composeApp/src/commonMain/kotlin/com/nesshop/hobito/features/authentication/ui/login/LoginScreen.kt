@@ -236,7 +236,7 @@ fun LoginScreen(
                             verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             OutlinedButton(
-                                onClick = { /* TODO: Handle Google Sign in */ },
+                                onClick = { viewModel.onIntent(LoginIntent.SignInWithGoogle)},
                                 modifier = Modifier.fillMaxWidth(),
                                 shape = RoundedCornerShape(12.dp),
                                 enabled = !uiState.isLoading

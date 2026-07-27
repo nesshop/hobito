@@ -21,4 +21,8 @@ class AuthRepositoryImpl(private val remoteDataSource: AuthRemoteDataSource) : A
     ): Result<AuthUser> {
         return remoteDataSource.createUserWithEmail(email, password)
     }
+
+    override suspend fun signInWithGoogle(): Result<AuthUser> {
+        return remoteDataSource.signInWithGoogle()
+    }
 }

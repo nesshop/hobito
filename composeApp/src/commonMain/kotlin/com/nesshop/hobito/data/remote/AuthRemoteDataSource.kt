@@ -7,5 +7,6 @@ expect class AuthRemoteDataSource {
     val authState: Flow<AuthUser?>
     suspend fun signInWithEmail(email: String, password: String): Result<AuthUser>
     suspend fun createUserWithEmail(email: String, password: String): Result<AuthUser>
+    suspend fun signInWithGoogle() : Result<AuthUser>
 
 }

@@ -96,4 +96,8 @@ actual class AuthRemoteDataSource {
             }
         }
     }
+
+    actual suspend fun signInWithGoogle(): Result<AuthUser> {
+        TODO("Not yet implemented")
+    }
 }

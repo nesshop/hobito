@@ -3,6 +3,7 @@ package com.nesshop.hobito.features.authentication.ui.login
 import com.nesshop.hobito.Res
 import com.nesshop.hobito.core.ui.viewmodel.BaseViewModel
 import com.nesshop.hobito.domain.usecase.auth.SignInWithEmailUseCase
+import com.nesshop.hobito.domain.usecase.auth.SignInWithGoogleUseCase
 import com.nesshop.hobito.domain.validation.EmailValidator
 import com.nesshop.hobito.domain.validation.PasswordValidation
 import com.nesshop.hobito.domain.validation.PasswordValidator
@@ -14,6 +15,7 @@ import com.nesshop.hobito.register_screen_password_error
 
 class LoginViewModel(
     private val signInWithEmailUseCase: SignInWithEmailUseCase,
+    private val signInWithGoogleUseCase: SignInWithGoogleUseCase
 ) : BaseViewModel<LoginState, LoginIntent, LoginUiEffect>(initialState = LoginState()) {
 
     override suspend fun handleIntent(intent: LoginIntent) {
@@ -46,8 +48,13 @@ class LoginViewModel(
             LoginIntent.TogglePasswordVisibility -> {
                 setState { copy(isPasswordVisible = !isPasswordVisible) }
             }
+            
+            is LoginIntent.SignInWithGoogle -> {
+                signInWithGoogle()
+            }
         }
     }
+
 
     private suspend fun signInWithEmail(email: String, password: String) {
         setState { copy(isLoading = true) }
@@ -61,7 +68,6 @@ class LoginViewModel(
         }
         setState { copy(isLoading = false) }
     }
-
     private fun validateEmail(email: String) {
         val isValid = EmailValidator.validate(email)
         setState {
@@ -87,5 +93,16 @@ class LoginViewModel(
         setState {
             copy(isFormValid = isEmailValid && isPasswordValid)
         }
+    }
+
+    private suspend fun signInWithGoogle() {
+        setState { copy(isLoading = true) }
+        val result = signInWithGoogleUseCase()
+        result.onSuccess {
+            sendEffect(LoginUiEffect.NavigateToHome)
+        }.onFailure { throwable ->
+            sendEffect(LoginUiEffect.ShowError(throwable.message ?: "Google Sign-In failed"))
+        }
+        setState { copy(isLoading = false) }
     }
 }

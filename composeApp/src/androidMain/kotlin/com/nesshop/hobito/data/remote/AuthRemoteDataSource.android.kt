@@ -38,5 +38,9 @@ actual class AuthRemoteDataSource {
         val user = auth.currentUser ?: error("User creation failed")
         AuthUser(user.uid, user.email ?: "")
     }
-    
+
+    actual suspend fun signInWithGoogle(): Result<AuthUser> {
+        TODO("Not yet implemented")
+    }
+
 }
