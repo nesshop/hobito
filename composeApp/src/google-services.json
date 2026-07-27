@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "549836708620-p1hsa5c22bv25149sbsg4jr1rl4ulqvk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nesshop.hobito",
+            "certificate_hash": "c7e71df86ebd38c4c14a17eb6ffa4336713eff55"
+          }
+        },
+        {
           "client_id": "549836708620-7j7m12hvdeac2h068qo9khk995coclkh.apps.googleusercontent.com",
           "client_type": 3
         }

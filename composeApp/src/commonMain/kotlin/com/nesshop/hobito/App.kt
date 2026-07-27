@@ -12,11 +12,13 @@ import com.nesshop.hobito.root.RootViewModel
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
+import org.koin.core.KoinApplication
 
 @Composable
 @Preview
-fun App() {
+fun App(koinConfig : KoinApplication.() -> Unit = {}) {
     KoinApplication(application = {
+        koinConfig()
         modules(
             platformModule, authModule, viewModelModule
         )

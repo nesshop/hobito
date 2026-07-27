@@ -40,6 +40,7 @@ kotlin {
             implementation(libs.koin.android)
             implementation(project.dependencies.platform(libs.firebase.bom))
             implementation(libs.firebase.auth)
+            implementation(libs.googleid)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -109,6 +110,11 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0.0"
+
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", "\"549836708620-7j7m12hvdeac2h068qo9khk995coclkh.apps.googleusercontent.com\"")
+    }
+    buildFeatures {
+        buildConfig = true
     }
     packaging {
         resources {
