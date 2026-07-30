@@ -97,7 +97,7 @@ fun DashboardBottomBar(
         ) {
             Box(contentAlignment = Alignment.Center){
                 FloatingActionButton(
-                    onClick = { /*TODO: accion de añadir*/ },
+                    onClick = { navController.navigate(DashboardRoute.HobbyRegister) },
                     modifier = Modifier.size(60.dp),
                     shape = CircleShape,
                     containerColor = bitterSweet,

@@ -354,7 +354,7 @@ Preferir:
 
 ```kotlin
 MyScreen(
-    state,
+    uiState,
     onIntent
 )
 ```

@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
 import com.nesshop.hobito.designsystem.layouts.HobitoScreenLayout
 import com.nesshop.hobito.features.home.HomeScreen
+import com.nesshop.hobito.features.register_hobby.HobbyRegisterRoute
 import com.nesshop.hobito.navigation.DashboardRoute
 
 @Composable
@@ -28,11 +30,18 @@ fun DashboardNavHost(
         modifier = modifier
     ) {
         composable<DashboardRoute.Home> {
-            HomeScreen(contentPadding = contentPadding,
-                navigateToAllActivities = {navController.navigate(DashboardRoute.AllActivities)},
+            HomeScreen(
+                contentPadding = contentPadding,
+                navigateToAllActivities = { navController.navigate(DashboardRoute.AllActivities) },
                 navigateToActivityDetails = {
                     // TODO: Implementar la navegación con el item
                 })
+        }
+        composable<DashboardRoute.HobbyRegister> {
+            HobbyRegisterRoute(
+                onNavigateBack = { navController.popBackStack() },
+                contentPadding = contentPadding
+            )
         }
         composable<DashboardRoute.Search> {
             HobitoScreenLayout(contentPadding = contentPadding) { safePadding: PaddingValues ->

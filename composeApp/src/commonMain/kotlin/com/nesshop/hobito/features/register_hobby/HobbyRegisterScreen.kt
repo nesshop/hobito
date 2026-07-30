@@ -37,6 +37,7 @@ import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -85,7 +86,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 @Composable
-fun RegisterHobbyRoute(
+fun HobbyRegisterRoute(
     onNavigateBack: () -> Unit,
     viewModel: HobbyRegisterViewModel = koinViewModel(),
     contentPadding: PaddingValues = PaddingValues()
@@ -108,7 +109,7 @@ fun RegisterHobbyRoute(
         }
     }
 
-    RegisterHobbyScreen(
+    HobbyRegisterScreen(
         uiState = uiState,
         onIntent = viewModel::onIntent,
         contentPadding = contentPadding
@@ -116,7 +117,7 @@ fun RegisterHobbyRoute(
 }
 
 @Composable
-private fun RegisterHobbyScreen(
+private fun HobbyRegisterScreen(
     uiState: HobbyRegisterState,
     onIntent: (HobbyRegisterIntent) -> Unit,
     contentPadding: PaddingValues = PaddingValues()
@@ -125,8 +126,8 @@ private fun RegisterHobbyScreen(
 
     if (showDatePicker) {
         HobbyDatePicker(
-            onDismiss = {showDatePicker = false},
-            onDateSelected = {date ->
+            onDismiss = { showDatePicker = false },
+            onDateSelected = { date ->
                 onIntent(HobbyRegisterIntent.OnDateChanged(date))
                 showDatePicker = false
             }
@@ -256,9 +257,7 @@ private fun CategoryItem(
                 contentDescription = null,
                 tint = color,
                 modifier = Modifier
-                    .size(16.dp)
-                    .align(Alignment.TopEnd)
-                    .padding(top = 4.dp, end = 4.dp)
+                    .size(32.dp)
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -392,7 +391,7 @@ private fun HobbyNotesSection(
                     tint = Color.Gray
                 )
             }
-            AnimatedVisibility(visible = isExpanded){
+            AnimatedVisibility(visible = isExpanded) {
                 HobitoTextField(
                     value = notes,
                     onValueChange = onNotesChanged,
@@ -456,7 +455,11 @@ private fun HobbyDatePicker(
                 HobitoText(text = "OK")
             }
         },
-        dismissButton = {HobitoText(text = "Cancel")}
+        dismissButton = {
+            TextButton(onClick = onDismiss){
+                HobitoText(text = "Cancel")
+            }
+        }
     ) {
         DatePicker(state = datePickerState)
     }
@@ -467,7 +470,7 @@ private fun HobbyDatePicker(
 @Composable
 private fun RegisterHobbyScreenPreview() {
     HobitoTheme {
-        RegisterHobbyScreen(
+        HobbyRegisterScreen(
             uiState = HobbyRegisterState(
                 title = "Mi nuevo Hobby",
                 category = HobbyCategory.GAME
