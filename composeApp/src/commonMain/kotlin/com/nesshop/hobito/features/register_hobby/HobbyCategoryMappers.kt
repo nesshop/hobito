@@ -23,9 +23,9 @@ fun HobbyCategory.toStringResource(): StringResource {
 
 fun LocalDate.toUiString(): String =
     format(LocalDate.Format {
-        day
+        day()
         char('/')
-        month.number
+        monthNumber()
         char('/')
         year()
     })

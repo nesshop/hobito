@@ -32,19 +32,19 @@
     <string name="home_screen_recent_activity">Actividad reciente</string>
 
     <!--Hobby Register Screen-->
-    <string name="hobby_register_title">Register Hobby</string>
-    <string name="hobby_register_cancel">Cancel</string>
-    <string name="hobby_register_category_label">Category</string>
-    <string name="hobby_register_category_movie">Movie</string>
-    <string name="hobby_register_category_series">Series</string>
-    <string name="hobby_register_category_book">Book</string>
-    <string name="hobby_register_category_game">Game</string>
-    <string name="hobby_register_title_label">TITLE</string>
+    <string name="hobby_register_title">Registrar Hobby</string>
+    <string name="hobby_register_cancel">Cancelar</string>
+    <string name="hobby_register_category_label">Categoría</string>
+    <string name="hobby_register_category_movie">Película</string>
+    <string name="hobby_register_category_series">Serie</string>
+    <string name="hobby_register_category_book">Libro</string>
+    <string name="hobby_register_category_game">Videojuego</string>
+    <string name="hobby_register_title_label">TÍTULO</string>
     <string name="hobby_register_title_placeholder">The Midnight Library</string>
-    <string name="hobby_register_date_label">DATE COMPLETED</string>
-    <string name="hobby_register_rating_label">RATING</string>
-    <string name="hobby_register_notes_label">Add Notes &amp; Thoughts</string>
-    <string name="hobby_register_save_button">Save Entry</string>
+    <string name="hobby_register_date_label">FECHA DE FINALIZACIÓN</string>
+    <string name="hobby_register_rating_label">NOTA</string>
+    <string name="hobby_register_notes_label">Añadir notas &amp; pensamientos</string>
+    <string name="hobby_register_save_button">Guardar registro</string>
 
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Logo circular</string>
