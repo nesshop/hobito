@@ -23,4 +23,6 @@ sealed class DashboardRoute {
     data object Statistics : DashboardRoute()
     @Serializable
     data object Profile : DashboardRoute()
+    @Serializable
+    data object HobbyRegister: DashboardRoute()
 }

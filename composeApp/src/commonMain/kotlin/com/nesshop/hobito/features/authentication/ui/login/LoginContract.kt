@@ -1,4 +1,4 @@
-package com.nesshop.hobito.features.authentication.ui.login.contract
+package com.nesshop.hobito.features.authentication.ui.login
 
 import org.jetbrains.compose.resources.StringResource
 

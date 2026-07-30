@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.nesshop.hobito.designsystem.components.molecules.FancyBackground
 
 @Composable
-fun HobitoScreen(
+fun HobitoScreenLayout(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
     showStatusBarProtector: Boolean = true,

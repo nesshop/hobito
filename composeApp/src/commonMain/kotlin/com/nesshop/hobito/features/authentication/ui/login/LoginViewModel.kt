@@ -7,9 +7,6 @@ import com.nesshop.hobito.domain.usecase.auth.SignInWithGoogleUseCase
 import com.nesshop.hobito.domain.validation.EmailValidator
 import com.nesshop.hobito.domain.validation.PasswordValidation
 import com.nesshop.hobito.domain.validation.PasswordValidator
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginIntent
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginState
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginUiEffect
 import com.nesshop.hobito.register_screen_email_error
 import com.nesshop.hobito.register_screen_password_error
 

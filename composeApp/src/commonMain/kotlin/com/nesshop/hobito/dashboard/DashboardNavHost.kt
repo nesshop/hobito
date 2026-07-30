@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
-import com.nesshop.hobito.designsystem.layouts.HobitoScreen
+import com.nesshop.hobito.designsystem.layouts.HobitoScreenLayout
 import com.nesshop.hobito.features.home.HomeScreen
 import com.nesshop.hobito.navigation.DashboardRoute
 
@@ -35,7 +35,7 @@ fun DashboardNavHost(
                 })
         }
         composable<DashboardRoute.Search> {
-            HobitoScreen(contentPadding = contentPadding) { safePadding: PaddingValues ->
+            HobitoScreenLayout(contentPadding = contentPadding) { safePadding: PaddingValues ->
                 HobitoText(
                     text = "Pantalla de búsqueda",
                     modifier = Modifier.fillMaxWidth().padding(safePadding).padding(24.dp),
@@ -44,7 +44,7 @@ fun DashboardNavHost(
             }
         }
         composable<DashboardRoute.Statistics> {
-            HobitoScreen(contentPadding = contentPadding) { safePadding: PaddingValues ->
+            HobitoScreenLayout(contentPadding = contentPadding) { safePadding: PaddingValues ->
                 HobitoText(
                     text = "Pantalla de estadísticas",
                     modifier = Modifier.fillMaxWidth().padding(safePadding).padding(24.dp),
@@ -53,7 +53,7 @@ fun DashboardNavHost(
             }
         }
         composable<DashboardRoute.Profile> {
-            HobitoScreen(contentPadding = contentPadding) { safePadding: PaddingValues ->
+            HobitoScreenLayout(contentPadding = contentPadding) { safePadding: PaddingValues ->
                 HobitoText(
                     text = "Pantalla de perfil",
                     modifier = Modifier.fillMaxWidth().padding(safePadding).padding(24.dp),

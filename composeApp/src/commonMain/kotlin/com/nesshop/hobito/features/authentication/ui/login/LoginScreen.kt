@@ -52,15 +52,13 @@ import com.nesshop.hobito.designsystem.components.atoms.HobitoTextField
 import com.nesshop.hobito.designsystem.components.molecules.HobitoClickableText
 import com.nesshop.hobito.designsystem.components.molecules.HobitoColoredTitle
 import com.nesshop.hobito.designsystem.components.molecules.HobitoPasswordTextField
-import com.nesshop.hobito.designsystem.layouts.HobitoScreen
+import com.nesshop.hobito.designsystem.layouts.HobitoScreenLayout
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.dodger_blue
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
 import com.nesshop.hobito.designsystem.theme.malibu
 import com.nesshop.hobito.designsystem.theme.yellow_orange
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginIntent
-import com.nesshop.hobito.features.authentication.ui.login.contract.LoginUiEffect
 import com.nesshop.hobito.google_logo
 import com.nesshop.hobito.login_screen_apple_logo_content_description
 import com.nesshop.hobito.login_screen_apple_sign
@@ -103,7 +101,7 @@ fun LoginScreen(
             }
         }
     }
-    HobitoScreen(showStatusBarProtector = true) { safePadding ->
+    HobitoScreenLayout(showStatusBarProtector = true) { safePadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()

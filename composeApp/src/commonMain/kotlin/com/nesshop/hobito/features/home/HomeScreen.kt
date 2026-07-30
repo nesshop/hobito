@@ -49,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import com.nesshop.hobito.Res
 import com.nesshop.hobito.book_icon
 import com.nesshop.hobito.designsystem.components.atoms.HobitoText
-import com.nesshop.hobito.designsystem.layouts.HobitoScreen
+import com.nesshop.hobito.designsystem.layouts.HobitoScreenLayout
 import com.nesshop.hobito.designsystem.theme.bitterSweet
 import com.nesshop.hobito.designsystem.theme.golden_tainoi
 import com.nesshop.hobito.designsystem.theme.java
@@ -99,7 +99,7 @@ fun HomeScreen(
         }
     }
 
-    HobitoScreen(contentPadding = contentPadding) {safePadding ->
+    HobitoScreenLayout(contentPadding = contentPadding) {safePadding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize()
                 .padding(horizontal = 24.dp),

@@ -30,6 +30,21 @@
     <string name="home_screen_view_all">View All</string>
     <string name="home_screen_recent_activity">Recent Activity</string>
 
+    <!--Hobby Register Screen-->
+    <string name="hobby_register_title">Register Hobby</string>
+    <string name="hobby_register_cancel">Cancel</string>
+    <string name="hobby_register_category_label">Category</string>
+    <string name="hobby_register_category_movie">Movie</string>
+    <string name="hobby_register_category_series">Series</string>
+    <string name="hobby_register_category_book">Book</string>
+    <string name="hobby_register_category_game">Game</string>
+    <string name="hobby_register_title_label">TITLE</string>
+    <string name="hobby_register_title_placeholder">The Midnight Library</string>
+    <string name="hobby_register_date_label">DATE COMPLETED</string>
+    <string name="hobby_register_rating_label">RATING</string>
+    <string name="hobby_register_notes_label">Add Notes &amp; Thoughts</string>
+    <string name="hobby_register_save_button">Save Entry</string>
+
     <!--Accessibility-->
     <string name="login_screen_circular_logo_content_description">Circular logo</string>
     <string name="login_screen_chat_logo_content_description">Chat logo</string>

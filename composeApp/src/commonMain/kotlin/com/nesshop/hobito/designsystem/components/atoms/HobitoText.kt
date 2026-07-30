@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import com.nesshop.hobito.Poppins_Regular
 import com.nesshop.hobito.Res
@@ -19,13 +20,16 @@ fun HobitoText(
     color: Color = MaterialTheme.colorScheme.onBackground,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
     fontFamily: FontFamily = FontFamily(Font(Res.font.Poppins_Regular)),
+    fontWeight: FontWeight? = null,
     textAlign: TextAlign? = null
 ) {
     Text(
         text = text,
         modifier = modifier,
         color = color,
-        style = style,
+        style = style.copy(
+            fontWeight = fontWeight ?: style.fontWeight
+        ),
         fontFamily = fontFamily,
         textAlign = textAlign
     )
